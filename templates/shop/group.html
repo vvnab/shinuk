@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} {{group.name_ru}}
+{% endblock %}
+
+{% load markup %}
+
+{% block content %}
+<div class='grid_12 alpha'>
+  {% if group.name = 'men' %}
+  <img alt='' src='/media/men02.jpg'/>
+  {% else %}
+  <img alt='' src='/media/women02.jpg'/>
+  {% endif %}
+</div>
+
+<div class='grid_6 gender'>
+<h3>ВИДЫ ОДЕЖДЫ</h3>
+<ul>
+{% if group.name = 'men' %}
+  {% for c in m_categorys %}
+  <li><a href='/shop/men/{{c.name}}/'>{{c.name_ru}}</a></li>
+  {% endfor %}
+{% else %}
+  {% for c in w_categorys %}
+  <li><a href='/shop/women/{{c.name}}/'>{{c.name_ru}}</a></li>
+  {% endfor %}
+{% endif %}
+</ul>
+</div>
+
+<div class='grid_6 omega gender'>
+<h3>БРЕНДЫ</h3>
+<ul>
+{% if group.name = 'men' %}
+  {% for b in m_brands|dictsort:'name' %}
+  <li><a href='/shop/brand/{{b}}/men/'>{{b.title|truncatewords:'4'}}</a></li>
+  {% endfor %}
+{% else %}
+  {% for b in w_brands|dictsort:'name' %}
+  <li><a href='/shop/brand/{{b}}/women/'>{{b.title|truncatewords:'4'}}</a></li>
+  {% endfor %}
+{% endif %}
+</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+﻿{% extends 'lbase.html' %}
+{% block js-css-add %}
+<script type='text/javascript' src='/media/js/jquery.maskedinput-1.3.min.js'></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.removeCookie('bag');
+    $('.buybutton').bind('click', function(){
+      $('input[name="CARD"]').unmask();
+      var card = $('input[name="CARD"]').val().replace(/ /g, '');
+      $('input[name="CARD"]').val(card);
+      $('form.clform').submit();
+    });
+    $.mask.definitions['~']='[01]';
+    $('input[name="CARD"]').mask('9999 9999 9999 9999', {placeholder: ' ', completed: function(){
+      $('input[name="EXP"]').focus();
+    }}).focus();
+    $('input[name="EXP"]').mask('~9', {placeholder: ' ', completed: function(){
+      $('input[name="EXP_YEAR"]').focus();
+    }});
+    $('input[name="EXP_YEAR"]').mask('99', {placeholder: ' ', completed: function(){
+      $('input[name="CVC2"]').focus();
+    }});
+    $('input[name="CVC2"]').mask('999', {placeholder: ' ', completed: function(){
+    }});
+  })
+</script>  
+{% endblock %}
+
+{% block title %} Ввод карточных данных
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24 align_justify'>
+<div class='flatpage cardbg'>
+<div class='grid_15 alpha'>
+<form class='clform' method='post' action='{{GATEWAY_URL}}'>
+<h1>ВВОД КАРТОЧНЫХ ДАННЫХ</h1>
+<hr/>
+  <label>Номер карты:</label>
+  <input type="TEXT" maxlength="19" size="20" name="CARD" value='' style='width: 185px;'/>
+  <br/>
+  <label>Дата:</label>
+  <input type="TEXT" maxlength="2" size="2" name="EXP" value='' style='width: 40px;'/> / <input type="TEXT" maxlength="2" size="2" name="EXP_YEAR" value='' style='width: 40px;'/>
+  <br/>
+  <label>CVC2:</label>
+  <input type="TEXT" maxlength="3" size="3" name="CVC2" value='' style='width: 55px;'/>
+
+  <input type='hidden' name='CVC2_RC' value='1'/>
+  <input type='hidden' name='AMOUNT' value='{{AMOUNT}}'/>
+  <input type='hidden' name='CURRENCY' value='{{CURRENCY}}'/>
+  <input type='hidden' name='ORDER' value='{{ORDER}}'/>
+  <input type='hidden' name='DESC' value='{{DESC}}'/>
+  <input type='hidden' name='MERCH_NAME' value='{{MERCH_NAME}}'/>
+  <input type='hidden' name='MERCH_URL' value='{{MERCH_URL}}'/>
+  <input type='hidden' name='MERCHANT' value='{{MERCHANT}}'/>
+  <input type='hidden' name='TERMINAL' value='{{TERMINAL}}'/>
+  <input type='hidden' name='EMAIL' value='{{EMAIL}}'/> 
+  <input type='hidden' name='TRTYPE' value='{{TRTYPE}}'/>
+  <input type='hidden' name='COUNTRY' value='{{COUNTRY}}'/>
+  <input type='hidden' name='MERCH_GMT' value='{{MERCH_GMT}}'/>
+  <input type='hidden' name='TIMESTAMP' value='{{TIMESTAMP}}'/>
+  <input type='hidden' name='NONCE' value='{{NONCE}}'/>
+  <input type='hidden' name='BACKREF' value='{{BACKREF}}'/>
+  <input type='hidden' name='P_SIGN' value='{{P_SIGN}}'/>
+<br/>
+<br/>
+<a style='float: left;margin-left: 200px;' class='buybutton'></a>
+</form>
+<br/>
+<br/>
+<hr/>
+<div class='grid_6 alpha'>
+  <a id='vbvisa' class='d3s' href='http://is.gd/R15tEx' target='_blank'></a>
+  <a id='mcsecure' class='d3s' href='http://is.gd/yCcXN0' target='_blank'></a>
+</div>
+<div class='grid_9 omega d3'>
+  <p>
+  Используется <a href='http://ru.wikipedia.org/wiki/3-D_Secure' target='_blank'>3-D Secure</a>, протокол обработки Интернет-транзакций, разработанный Visa и одобренный MasterCard. Он предназначен для обеспечения безопасности Интернет платежей, выполняемых с использованием кредитных или дебетовых карт. Данный протокол иначе именуется <a href='http://is.gd/R15tEx' target='_blank'>Verified by Visa</a> в терминологии Visa и <a href='http://is.gd/yCcXN0' target='_blank'>SecureCode</a> в терминологии MasterCard. 
+  </p>
+</div>
+</div>
+<div class='clear'></div>
+</div>
+</div>
+{% endblock %}
+

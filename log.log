@@ -1,0 +1,356 @@
+2013-02-27 10:33:23.818492 - ok
+2013-02-27 10:33:23.824559 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:33:31.088532 - ok
+2013-02-27 10:33:31.097754 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:34:07.299648 - ok
+2013-02-27 10:34:07.315129 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:34:41.031970 - ok
+2013-02-27 10:34:41.046808 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:37:03.745396 - ok
+2013-02-27 10:37:03.761026 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:39:00.837837 - ok
+2013-02-27 10:39:00.853472 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:39:41.675141 - ok
+2013-02-27 10:39:41.689518 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:40:19.841521 - ok
+2013-02-27 10:40:19.860212 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:41:02.036792 - ok
+2013-02-27 10:41:02.050598 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:41:43.447685 - ok
+2013-02-27 10:41:43.463455 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:42:04.382059 - ok
+2013-02-27 10:42:04.397838 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:42:46.967095 - ok
+2013-02-27 10:42:46.983558 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:43:07.127903 - ok
+2013-02-27 10:43:07.144706 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:43:43.466904 - ok
+2013-02-27 10:43:43.483777 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:44:09.860886 - ok
+2013-02-27 10:44:09.877384 [['example', u'\u043f\u0440\u0438\u043c\u0435\u0440'], ['straight', u'\u043f\u0440\u044f\u043c\u044b\u0435'], ['regular', u'\u0441\u0440\u0435\u0434\u043d\u0438\u0439']]
+2013-02-27 10:44:24.839784 - ok
+2013-02-27 10:44:24.856669 example пример
+2013-02-27 10:45:09.102944 - ok
+2013-02-27 10:45:09.120377 example пример
+2013-02-27 10:45:17.551840 - ok
+2013-02-27 10:45:48.616615 - ok
+2013-02-27 10:46:04.308700 - ok
+2013-02-27 10:46:10.331688 - ok
+2013-02-27 10:46:16.139412 - ok
+2013-02-27 10:46:49.771517 - ok
+Send email to - darvineyes@yandex.ru
+Ok sended email to - darvineyes@yandex.ru
+Send email to - safarova.polina@rambler.ru
+Ok sended email to - safarova.polina@rambler.ru
+Send email to - sadiki@yandex.ru
+Ok sended email to - sadiki@yandex.ru
+Send email to - BushuevaIV@uralsib.ru
+Ok sended email to - BushuevaIV@uralsib.ru
+Send email to - vnaber@mail.ru
+Ok sended email to - vnaber@mail.ru
+Send email to - elena.myazina@gmail.com
+Ok sended email to - elena.myazina@gmail.com
+Send email to - mila.bedrik@mail.ru
+Ok sended email to - mila.bedrik@mail.ru
+Send email to - serjozha.96@mail.ru
+Ok sended email to - serjozha.96@mail.ru
+Send email to - byanik26@yandex.ru
+Ok sended email to - byanik26@yandex.ru
+Send email to - yolatc@mail.ru
+Ok sended email to - yolatc@mail.ru
+Send email to - art-kun@yandex.ru
+Ok sended email to - art-kun@yandex.ru
+Send email to - sa21pa19@mail.ru
+Ok sended email to - sa21pa19@mail.ru
+Send email to - tv-katerina@mail.ru
+Ok sended email to - tv-katerina@mail.ru
+Send email to - anna_ep@mail.ru
+Ok sended email to - anna_ep@mail.ru
+Send email to - doux_@mail.ru
+Ok sended email to - doux_@mail.ru
+Send email to - grinko.t@mail.ru
+Ok sended email to - grinko.t@mail.ru
+Send email to - e.v.kuzovleva@yandex.ru
+Ok sended email to - e.v.kuzovleva@yandex.ru
+Send email to - skaib@mail.ru
+Ok sended email to - skaib@mail.ru
+Send email to - tolkovera@bk.ru
+Ok sended email to - tolkovera@bk.ru
+Send email to - Katyadich@list.ru
+Ok sended email to - Katyadich@list.ru
+Send email to - azazela41@list.ru
+Ok sended email to - azazela41@list.ru
+Send email to - belov_as@mail.ru
+Ok sended email to - belov_as@mail.ru
+Send email to - GirlFriend4363@yandex.ru
+Ok sended email to - GirlFriend4363@yandex.ru
+Send email to - ingulya.76@mail.ru
+Ok sended email to - ingulya.76@mail.ru
+Send email to - a928tm@gmail.com
+Ok sended email to - a928tm@gmail.com
+Send email to - keti99999@mail.ru
+Ok sended email to - keti99999@mail.ru
+Send email to - krisleng13@mail.ru
+Ok sended email to - krisleng13@mail.ru
+Send email to - malish-119@mail.ru
+Ok sended email to - malish-119@mail.ru
+Send email to - Oks0812@yandex.ru
+Ok sended email to - Oks0812@yandex.ru
+Send email to - asvmax@mail.ru
+Ok sended email to - asvmax@mail.ru
+Send email to - mara112007@ya.ru
+Ok sended email to - mara112007@ya.ru
+Send email to - Nasyaka@rambler.ru
+Ok sended email to - Nasyaka@rambler.ru
+Send email to - irenealexeeva@gmail.com
+Ok sended email to - irenealexeeva@gmail.com
+Send email to - belyulya@yandex.ru
+Ok sended email to - belyulya@yandex.ru
+Send email to - gubanovatanya@bk.ru
+Ok sended email to - gubanovatanya@bk.ru
+Send email to - svistich@inbox.ru
+Ok sended email to - svistich@inbox.ru
+Send email to - vikyli-16@mail.ru
+Ok sended email to - vikyli-16@mail.ru
+Send email to - oks0812@yandex.ru
+Ok sended email to - oks0812@yandex.ru
+Send email to - vesna-84@mail.ru
+Ok sended email to - vesna-84@mail.ru
+Send email to - arzamastseva.natalie@yandex.ru
+Ok sended email to - arzamastseva.natalie@yandex.ru
+Send email to - mimipopo@mail.ru
+Ok sended email to - mimipopo@mail.ru
+Send email to - cachmc@yandex.ru
+Ok sended email to - cachmc@yandex.ru
+Send email to - Lennna3000@yandex.ru
+Ok sended email to - Lennna3000@yandex.ru
+Send email to - chochievastella@mail.ru
+Ok sended email to - chochievastella@mail.ru
+Send email to - vvnab@mail.ru
+Ok sended email to - vvnab@mail.ru
+Send email to - marina81180@gmail.com
+Ok sended email to - marina81180@gmail.com
+Send email to - nurochka1601@yandex.ru
+Ok sended email to - nurochka1601@yandex.ru
+Send email to - oxana.butterfly@yandex.ru
+Ok sended email to - oxana.butterfly@yandex.ru
+Send email to - unusual20@mail.ru
+Ok sended email to - unusual20@mail.ru
+Send email to - kotlyar307@rambler.ru
+Ok sended email to - kotlyar307@rambler.ru
+Send email to - top10@bk.ru
+Ok sended email to - top10@bk.ru
+Send email to - skach_07@mail.ru
+Ok sended email to - skach_07@mail.ru
+Send email to - deuce431@yandex.ru
+Ok sended email to - deuce431@yandex.ru
+Send email to - ekamartens@gmail.com
+Ok sended email to - ekamartens@gmail.com
+Send email to - dashikbritkina@mail.ru
+Ok sended email to - dashikbritkina@mail.ru
+Send email to - littlelove6@mail.ru
+Ok sended email to - littlelove6@mail.ru
+Send email to - 10_messi.lionel@mail.ru
+Ok sended email to - 10_messi.lionel@mail.ru
+Send email to - dalina16@yandex.ru
+Ok sended email to - dalina16@yandex.ru
+Send email to - snej-ik@rambler.ru
+Ok sended email to - snej-ik@rambler.ru
+Send email to - finnearl@mail.ru
+Ok sended email to - finnearl@mail.ru
+Send email to - verka1989@mail.ru
+Ok sended email to - verka1989@mail.ru
+Send email to - ggurskaja@rambler.ru
+Ok sended email to - ggurskaja@rambler.ru
+Send email to - inna117.91@mail.ru
+Ok sended email to - inna117.91@mail.ru
+Send email to - wonderlea@gmail.com
+Ok sended email to - wonderlea@gmail.com
+Send email to - tatjana_pavlova@mail.ru
+Ok sended email to - tatjana_pavlova@mail.ru
+Send email to - gorbunova216@yandex.ru
+Ok sended email to - gorbunova216@yandex.ru
+Send email to - alexandra.lavrenova@gmail.com
+Ok sended email to - alexandra.lavrenova@gmail.com
+Send email to - sakyra116@yandex.ru
+Ok sended email to - sakyra116@yandex.ru
+Send email to - raiskaya_girl@mail.ru
+Ok sended email to - raiskaya_girl@mail.ru
+Send email to - mair2802-06@yandex.ru
+Ok sended email to - mair2802-06@yandex.ru
+Send email to - smetanka-nata@yandex.ru
+Ok sended email to - smetanka-nata@yandex.ru
+Send email to - erzhena.zhalsanova@yandex.ru
+Ok sended email to - erzhena.zhalsanova@yandex.ru
+Send email to - t.zaytseva2011@yandex.ru
+Ok sended email to - t.zaytseva2011@yandex.ru
+Send email to - odis@ngs.ru
+Ok sended email to - odis@ngs.ru
+Send email to - miheeva-mirina@yandex.ru
+Ok sended email to - miheeva-mirina@yandex.ru
+Send email to - katira@yandex.ru
+Ok sended email to - katira@yandex.ru
+Send email to - kavalyauskena_i@mail.ru
+Ok sended email to - kavalyauskena_i@mail.ru
+Send email to - piliavska@googlemail.com
+Ok sended email to - piliavska@googlemail.com
+Send email to - vvnab@ya.ru
+Ok sended email to - vvnab@ya.ru
+Send email to - vadimahmad@mail.ru
+Ok sended email to - vadimahmad@mail.ru
+Send email to - gaponceva@inbox.ru
+Ok sended email to - gaponceva@inbox.ru
+Send email to - macsimus1987@rambler.ru
+Ok sended email to - macsimus1987@rambler.ru
+Send email to - kgrumet@bk.ru
+Ok sended email to - kgrumet@bk.ru
+Send email to - girloriginal@mail.ru
+Ok sended email to - girloriginal@mail.ru
+Send email to - s-taya8@mail.ru
+Ok sended email to - s-taya8@mail.ru
+Send email to - mango1974@yandex.ru
+Ok sended email to - mango1974@yandex.ru
+Send email to - sakyra116@yahoo.ru
+Ok sended email to - sakyra116@yahoo.ru
+Send email to - katrin_07_80@mail.ru
+Ok sended email to - katrin_07_80@mail.ru
+Send email to - Panocgeorgii@gmail.com
+Ok sended email to - Panocgeorgii@gmail.com
+Send email to - gold1220@mail.ru
+Ok sended email to - gold1220@mail.ru
+Send email to - valysha.9494@mail.ru
+Ok sended email to - valysha.9494@mail.ru
+Send email to - maxa2507@mail.ru
+Ok sended email to - maxa2507@mail.ru
+Send email to - pishiesho1@rambler.ru
+Ok sended email to - pishiesho1@rambler.ru
+Send email to - KVysockaya22@yandex.ru
+Ok sended email to - KVysockaya22@yandex.ru
+Send email to - hramovicheva@po-korf.ru
+Ok sended email to - hramovicheva@po-korf.ru
+Send email to - narmania2009@yandex.ru
+Ok sended email to - narmania2009@yandex.ru
+Send email to - get86@mail.ru
+Ok sended email to - get86@mail.ru
+Send email to - nadin_nelepaya@mail.ru
+Ok sended email to - nadin_nelepaya@mail.ru
+Send email to - narcissa1990@inbox.ru
+Ok sended email to - narcissa1990@inbox.ru
+Send email to - mustik-08@mail.ru
+Ok sended email to - mustik-08@mail.ru
+Send email to - ad.mazunin@yandex.ru
+Ok sended email to - ad.mazunin@yandex.ru
+Send email to - platini84@yandex.ru
+Ok sended email to - platini84@yandex.ru
+Send email to - smirnova-nat-a@yandex.ru
+Ok sended email to - smirnova-nat-a@yandex.ru
+Send email to - 074@ngs.ru
+Ok sended email to - 074@ngs.ru
+Send email to - AndrewUtkaev@yandex.ru
+Ok sended email to - AndrewUtkaev@yandex.ru
+Send email to - lola727@yandex.ru
+Ok sended email to - lola727@yandex.ru
+Send email to - lala82.06.10@mail.ru
+Ok sended email to - lala82.06.10@mail.ru
+Send email to - kiss_an@mail.ru
+Ok sended email to - kiss_an@mail.ru
+Send email to - rapocevich72@mail.ru
+Ok sended email to - rapocevich72@mail.ru
+Send email to - inna.azov@rambler.ru
+Ok sended email to - inna.azov@rambler.ru
+Send email to - Lezard87@mail.ru
+Ok sended email to - Lezard87@mail.ru
+Send email to - miss.kucherencko@yandex.ru
+Ok sended email to - miss.kucherencko@yandex.ru
+Send email to - 2533007@gmail.com
+Ok sended email to - 2533007@gmail.com
+Send email to - krasnova.inna2013@yandex.ru
+Ok sended email to - krasnova.inna2013@yandex.ru
+Send email to - deewa.kristina@yandex.ru
+Ok sended email to - deewa.kristina@yandex.ru
+Send email to - ksusha.bo@gmail.com
+Ok sended email to - ksusha.bo@gmail.com
+Send email to - opt8515@mail.ru
+Ok sended email to - opt8515@mail.ru
+Send email to - mar@mail.ru
+Ok sended email to - mar@mail.ru
+Send email to - andrey.bulanin@mail.ru
+Ok sended email to - andrey.bulanin@mail.ru
+Send email to - polyanumber1@inbox.ru
+Ok sended email to - polyanumber1@inbox.ru
+Send email to - filia88@bk.ru
+Ok sended email to - filia88@bk.ru
+Send email to - lilu-dana@mail.ru
+Ok sended email to - lilu-dana@mail.ru
+Send email to - vd-94@mail.ru
+Ok sended email to - vd-94@mail.ru
+Send email to - lockdog3@mail.ru
+Ok sended email to - lockdog3@mail.ru
+Send email to - ONION80@list.ru
+Ok sended email to - ONION80@list.ru
+Send email to - EChistuhina@mail.ru
+Ok sended email to - EChistuhina@mail.ru
+Send email to - Darkeretic@mail.ru
+Ok sended email to - Darkeretic@mail.ru
+Send email to - qwerty@mail.ru
+Ok sended email to - qwerty@mail.ru
+Send email to - pitak@go.ru
+Ok sended email to - pitak@go.ru
+Send email to - mr-black-2012@mail.ru
+Ok sended email to - mr-black-2012@mail.ru
+Send email to - sat.85@list.ru
+Ok sended email to - sat.85@list.ru
+Send email to - nadyucha_74@mail.ru
+Ok sended email to - nadyucha_74@mail.ru
+Send email to - leo-0789@mail.ru
+Ok sended email to - leo-0789@mail.ru
+Send email to - mpolshkova@rambler.ru
+Ok sended email to - mpolshkova@rambler.ru
+Send email to - udarov@mail.ru
+Ok sended email to - udarov@mail.ru
+Send email to - belaua@mail.ru
+Ok sended email to - belaua@mail.ru
+Send email to - hamovik@yandex.ru
+Ok sended email to - hamovik@yandex.ru
+Send email to - otesal@mail.ru
+Ok sended email to - otesal@mail.ru
+Send email to - Ka4erik@yandex.ru
+Ok sended email to - Ka4erik@yandex.ru
+Send email to - 19118383@mail.ru
+Ok sended email to - 19118383@mail.ru
+Send email to - ksundr030886@mail.ru
+Ok sended email to - ksundr030886@mail.ru
+Send email to - mila.evsina@mail.ru
+Ok sended email to - mila.evsina@mail.ru
+Send email to - guseva-ea@mail.ru
+Ok sended email to - guseva-ea@mail.ru
+Send email to - super.pupsik007@yandex.ru
+Ok sended email to - super.pupsik007@yandex.ru
+Send email to - ruslana83@mail.ru
+Ok sended email to - ruslana83@mail.ru
+Send email to - spain_1@mail.ru
+Ok sended email to - spain_1@mail.ru
+Send email to - vitalkovalev@rambler.ru
+Ok sended email to - vitalkovalev@rambler.ru
+Send email to - varvara121@mail.ru
+Ok sended email to - varvara121@mail.ru
+Send email to - zadorin_a@mail.ru
+Ok sended email to - zadorin_a@mail.ru
+Send email to - julica81@yandex.ru
+Ok sended email to - julica81@yandex.ru
+Send email to - Irin8@rambler.ru
+Ok sended email to - Irin8@rambler.ru
+Send email to - rt71@bk.ru
+Ok sended email to - rt71@bk.ru
+Send email to - metallika96@mail.ru
+Ok sended email to - metallika96@mail.ru
+Send email to - katya.korneva@gmail.com
+Ok sended email to - katya.korneva@gmail.com
+Send email to - Vladimirova_vikt@mail.ru
+Ok sended email to - Vladimirova_vikt@mail.ru
+Send email to - iren-a9@mail.ru
+Ok sended email to - iren-a9@mail.ru
+Send email to - koptij.irina@mail.ru
+Ok sended email to - koptij.irina@mail.ru
+Send email to - vnaber@mail.ru
+Ok sended email to - vnaber@mail.ru

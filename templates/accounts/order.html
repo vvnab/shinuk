@@ -1,0 +1,136 @@
+﻿{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block js-css-add %}
+<script type="text/javascript">
+$(document).ready(function(){
+  $.ajax({
+    type: 'GET',
+    url: 'http://wab-net.ru/postcode/json/{{order.parcel}}/',
+    dataType: 'jsonp',
+    jsonpCallback: 'successCallback',
+    success: function(data){
+      var html = '';
+      if (data.status == 'ok') {
+        var list = data.list;
+        html = '<tr> <th>Операция</th> <th>Дата</th> <th>Индекс</th> <th>ОПС</th> <th>Атрибут</th> </tr>';
+        for (var i in list) {
+          html += '<tr> <td>{0}</td> <td>{1}</td> <td>{2}</td> <td>{3}</td> <td>{4}</td> </tr>'.format(list[i].operation, list[i].date, list[i].index1, list[i].OPC, list[i].attr);
+        };
+        html = '<table>{0}</table>'.format(html);
+      } else {
+        html = '<h4>{0}</h4><hr/><div class="parcelInfo"><p>Скорее всего это означает, что посылка ещё не прибыла на территорию РФ.<br/>При возникновении любых вопросов пишите на адрес <a href="mailto:info@shinuk.ru">info@shinuk.ru</a></p></div>'.format(data.desc);
+      };
+      $('#Parcel').html(html);
+    }
+  });
+  $('#showParcel').bind('click', function(){
+    $('div#Parcel').dialog({
+      title: 'Перемещение отправления № {{order.parcel}}',
+      modal: true,
+      width: 900,
+      maxHeight: 560,
+      buttons: {
+        'Закрыть': function(){
+          $(this).dialog('close')
+        }
+      }
+    });
+  });
+});
+</script>
+
+{% endblock %}
+
+
+{% block title %} Детали заказа № {{order.id}}
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24'>
+<br/>
+<h4>ПОДРОБНОСТИ ЗАКАЗА № {{order.id}}</h4>
+<table class='checkout'>
+  <tr>
+  <th>№</th>
+  <th>Наименование</th>
+  <th>Цвет</th>
+  <th>Размер</th>
+  <th>Кол-во</th>
+  <th class='aright'>Цена</th>
+  <th class='aright'>Сумма</th>
+  </tr>
+  {% for o in order.orderitem_set.all%}
+  <tr>
+  <td>{{forloop.counter}}</td>
+  <td><a href='/shop/model/{{o.thing.model.art}}/'>{{o.thing.model.name}}</a></td>
+  <td>{{o.thing.color.name_ru}}</td>
+  <td>{{o.size.size_ru}}</td>
+  <td>{{o.quantity}} шт.</td>
+  <td class='aright'>{{o.price|intcomma}} р.</td>
+  <td class='aright'>{{o.cost|intcomma}} р.</td>
+  </tr>
+  {% endfor %}
+</table>
+<table class='total'>
+  <tr class='aright'>
+  <td>Сумма:</td> 
+  <td>{{order.parcelcost|intcomma}} р.</td>
+  </tr>
+  <tr class='aright'>
+  <td>Доставка {{order.delivery}}:</td> 
+  <td><span id='delrur'>{{order.deliverycost|intcomma}}</span> р.</td>
+  </tr>
+  <tr class='aright fbold'>
+  <td>Итого:</td> 
+  <td><span id='amountrur'>{{order.totalcost|intcomma}}</span> р.</td>
+  </tr>
+</table><!-- end of table.total -->
+<h4>Адрес доставки</h4>
+<h6>
+<i>{{order.user.get_profile.get_full_name}}</i><br/>
+{{order.address.zip}} <i>{{order.address}}</i>
+</h6>
+<hr/>
+<table class='checkout'>
+  <tr>
+  <th>Статус</th>
+  <th>Дата</th>
+  <th>Время (Москва)</th>
+  </tr>
+  {% for s in order.orderstatuslist_set.all %}
+  <tr>
+  <td>{{s.status.title}}</td>
+  <td>{{s.datetime|date:'d E Y'}}</td>
+  <td>{{s.datetime|date:'H:i:s'}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% if order.status.status.id = 1 %} 
+<form method='post' action='.'>
+{% csrf_token %}
+  <input type='hidden' name='action' value='reject'/>
+  <input type='submit' value='отказаться'/>
+</form>
+<br/>
+{% endif %}
+{% if order.parcel %}
+<hr/>
+<div class='parcelInfo'>
+<p>
+Ваш заказ успешно отправлен по указанному адресу.<br/>
+Почтовый идентификатор отправления: <a id='showParcel' href='javascript:void(null)'>{{order.parcel}}</a>
+</p>
+</div>
+<div id='Parcel' class='nodisplay flatpage'>
+  <div class='tableCell'>
+    <img alt='' src='/media/loader2.gif'/>
+  </div>
+</div>
+{% endif %}
+</div>
+{% endblock %}

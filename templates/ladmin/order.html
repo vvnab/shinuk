@@ -1,0 +1,168 @@
+﻿{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+<script type='text/javascript'>
+$(function(){
+//  $('.order').click(function(){
+//    var id = $(this).attr('id').replace('art_', '');
+//    document.location.href = '/shop/model/{0}/'.format(id);
+//  });
+});
+</script>
+{% endblock %}
+
+{% block title %} Заказ #{{order.id}} {% endblock %}
+
+{% load humanize %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% endblock %}
+
+{% block content %}
+<h2 class='fptitle'><a href='/admin/orders/order/{{order.id}}/' target='_blank'>Заказ #{{order.id}}</a></h2>
+
+<h4>Покупатель</h4>
+{{order.user.last_name}} {{order.user.first_name}} {{order.user.get_profile.middlename}}<br/>
+{{order.address.zip}} {{order.address}}<br/>
+тел.: {{order.user.get_profile.phone}}<br/>
+<a href='mailto:{{order.user.email}}'>{{order.user.email}}</a>
+<br/><br/>
+<form action='/ladmin/order/delete/' method='post'>
+{% csrf_token %}
+<input value='{{order.id}}' name='order' type='hidden' />
+<input type='submit' value='Удалить заказ' id='order_delete' />
+</form>
+<hr/>
+
+<h4>Список покупок</h4>
+<table>
+{% for i in order.orderitem_set.all %}
+{% if i.quantity %}
+<tr id='art_{{i.thing.model.art}}'>
+  <td class='aleft'><a href='/shop/model/{{i.thing.model.art}}/' target='_blank'>{{i.thing.model.name}}</a></td>
+  <td>{{i.thing.color.name_ru}}</td>
+  <td>{{i.size.size_ru}}</td>
+  <td>{{i.quantity}}</td>
+  <td>£{{i.thing.price}}</td>
+  <td>{{i.cost|intcomma}} р.</td>
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+<table class='total'>
+<tr>
+  <td>
+    Сумма заказа:
+  </td> 
+  <td>
+    {{order.parcelcost|intcomma}} р.
+  </td>
+</tr>
+  <td>
+    Метод отправления:
+  </td>
+  <td>
+    {{order.delivery}}
+  </td>
+<tr>
+  <td>
+    Стоимость отправления: 
+  </td>
+  <td>
+    {{order.deliverycost|intcomma}} р.
+  </td>
+</tr>
+<tr class='bold'>
+  <td>
+    Общая стоимость:
+  </td>
+  <td>
+    {{order.totalcost|intcomma}} р.
+  </td>
+</tr>
+</table>
+<hr/>
+{% for i in order.orderitem_set.all %}
+{% if i.quantity %}
+{% if i.quantity > 1 %}
+{{i.thing.model.name}} (цвет: {{i.thing.color.name_ru}}, размер: {{i.size.size_ru}}) кол-во: {{i.quantity}}) шт., стоимость: {{i.cost|intcomma}} р.<br/>
+{% else %}
+{{i.thing.model.name}} (цвет: {{i.thing.color.name_ru}}, размер: {{i.size.size_ru}}) цена: {{i.cost|intcomma}} р.<br/>
+{% endif %}
+{% endif %}
+{% endfor %}
+Сумма заказа: {{order.parcelcost|intcomma}} р.<br/>
+Метод отправления: {{order.delivery}}<br/>
+Стоимость отправления: {{order.deliverycost|intcomma}} р.<br/><br/>
+Общая сумма Вашего заказа составляет: {{order.totalcost|intcomma}} р. и включает все расходы по доставке товара  службой доставки {{order.delivery}}
+<hr/>
+<h4>Оплата</h4>
+{{order.pay.method}}
+{% if rr %}
+  - {{rr}}
+  <br/>
+  <br/>
+  <form class='endsale' method='post' action='{{GATEWAY_URL}}' id='id1'>
+    <input type='hidden' name='ORDER' value='{{ORDER}}'>
+    <input type='hidden' name='AMOUNT' value='{{AMOUNT}}'>
+    <input type='hidden' name='CURRENCY' value='{{CURRENCY}}'>
+    <input type='hidden' name='RRN' value='{{RRN}}'>
+    <input type='hidden' name='INT_REF' value='{{INT_REF}}'>
+    <input type='hidden' name='TRTYPE' value='{{TRTYPE_ACCEPT}}'>
+    <input type='hidden' name='TERMINAL' value='{{TERMINAL}}'>
+    <input type='hidden' name='TIMESTAMP' value='{{TIMESTAMP}}'>
+    <input type='hidden' name='NONCE' value='{{NONCE}}'>
+    <input type='hidden' name='P_SIGN' value='{{P_SIGN_ACCEPT}}'>
+    <input type='submit' value='Принять'>
+  </form>
+
+  <form class='endsale' method='post' action='{{GATEWAY_URL}}'>
+    <input type='hidden' name='ORDER' value='{{ORDER}}'>
+    <input type='hidden' name='AMOUNT' value='{{AMOUNT}}'>
+    <input type='hidden' name='CURRENCY' value='{{CURRENCY}}'>
+    <input type='hidden' name='RRN' value='{{RRN}}'>
+    <input type='hidden' name='INT_REF' value='{{INT_REF}}'>
+    <input type='hidden' name='TRTYPE' value='{{TRTYPE_REJECT}}'>
+    <input type='hidden' name='TERMINAL' value='{{TERMINAL}}'>
+    <input type='hidden' name='TIMESTAMP' value='{{TIMESTAMP}}'>
+    <input type='hidden' name='NONCE' value='{{NONCE}}'>
+    <input type='hidden' name='P_SIGN' value='{{P_SIGN_REJECT}}'>
+    <input type='submit' value='Отклонить'>
+  </form>
+{% endif %}
+<hr/>
+<h4>Статус заказа</h4>
+<table>
+  {% for s in order.orderstatuslist_set.all %}
+  <tr>
+    <td>{{s.id}}</td>
+    <td class='aleft'>{{s.datetime}}</td>
+    <td class='aleft'>{{s.status}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<form method='post' action='.'>
+{% csrf_token %}
+<input type='hidden' value='add_status' name='action'/>
+<select name='status'>
+  {% for s in orderstatus %}
+    <option value='{{s.id}}'>{{s}}</option>
+  {% endfor %}
+</select>
+<input type='submit' value='добавить' />
+</form>
+<hr/>
+<h4>Отправление</h4>
+<form method='post' action='.'>
+{% csrf_token %}
+<input type='hidden' value='set_parcel_code' name='action'/>
+{% if not order.parcel %}
+<input type='text' name='parcel_code' value='{{order.parcel}}'/>
+<input  type='submit' value='назначить'/>
+{% else %}
+<a href='http://wab-net.ru/postcode/{{order.parcel}}/' target='_blank'>{{order.parcel}}</a>
+{% endif %}
+</form>
+<hr/>
+{% endblock %}
+

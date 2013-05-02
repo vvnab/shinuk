@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+  <title>{% block title %}{% endblock %} | ShinUK</title>
+  <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
+  <link rel='shortcut icon' href='/media/favicon.ico' type='image/x-icon' />
+  <link rel='stylesheet' type='text/css' href='/media/css/reset.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/960_24_col.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/text.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/base.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/smoothness/jquery-ui.css'/>
+  <link rel='stylesheet/less' type='text/css' href='/media/css/text.less'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/jquery.jscrollpane.css'/>
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'></script>
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
+  <script type='text/javascript' src='/media/js/less-1.0.41.min.js'></script>
+  <script type='text/javascript' src="/media/js/jquery.timers.js"></script>
+  <script type='text/javascript' src='/media/js/string.format-1.0.packed.js'></script>
+  <script type='text/javascript' src='/media/js/json2.js'></script>
+  <script type='text/javascript' src='/media/js/jquery.ezCookie_0.8.0.js'></script>
+  <script type='text/javascript' src='/media/js/intcomma.js'></script>
+  {% block js-css-add %}
+  {% endblock %}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('input[type="button"]').button();
+      $('input[type="submit"]').button();
+    })
+  </script>  
+</head>
+
+<body>
+
+<div class='top'>
+    <div class='container_24'>
+        <div class='grid_6 alpha'>
+            <a href='/' class='aimg' id='logo'></a>
+        </div>
+    </div> <!-- end of container-->
+    <div class='clear'>
+    </div>
+</div> <!-- end of top -->
+
+
+<div class='main'>
+  <div class='container_24 clearfix'>
+    <div class='grid_24'>
+      <br/>    
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div> <!-- end of container -->
+</div> <!-- end of main -->
+
+<div class="creator">
+    <div class='container_24'>
+        &copy; 2010 &ndash; 2011 design by <a target="_blank" href="http://wab-net.ru"> wab-net.ru</a>
+        Powred by <a target="_blank" href="http://www.djangoproject.org">Django</a>&trade;
+    </div>
+</div>
+
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter7342108 = new Ya.Metrika({id:7342108,
+                    clickmap:true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/7342108" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Start of Zopim Live Chat Script -->
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=
+z.s=d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o
+){z.set._.push(o)};$.setAttribute('charset','utf-8');$.async=!0;z.set.
+_=[];$.src=('https:'==d.location.protocol?'https://ssl':'http://cdn')+
+'.zopim.com/?bWY1FyHUhbkzgRCFBmfhPjuvnp44OI4r';$.type='text/java'+s;z.
+t=+new Date;z._=[];e.parentNode.insertBefore($,e)})(document,'script');
+$zopim(function(){
+  $zopim.livechat.setLanguage("ru");
+});
+</script>
+<!-- End of Zopim Live Chat Script -->
+
+</body>
+</html>

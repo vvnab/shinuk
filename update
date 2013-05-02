@@ -1,0 +1,6 @@
+#!/bin/bash
+# psql -c 'SELECT COUNT(DISTINCT model_id) FROM goods_thing WHERE present = true;'
+source /home/shinuk/bin/activate
+cd /home/shinuk/shinuk_update
+scrapy crawl asos.com --loglevel=ERROR
+psql -c 'SELECT COUNT(DISTINCT model_id) FROM goods_thing WHERE present = true;' | mail -s 'report' admin@shinuk.ru

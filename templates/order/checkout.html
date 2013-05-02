@@ -1,0 +1,214 @@
+{% extends 'lbase.html' %}
+{% block js-css-add %}
+<script type='text/javascript' src='/media/js/jquery.maskedinput-1.3.min.js'></script>
+<script type="text/javascript">
+  var total = {{total}};
+  function recost(){
+    var delivery = $('input[name="delivery"]:checked').attr('value');
+    var deliverycost = $('input#dvc_{0}'.format(delivery)).attr('value');
+    $('#delrur').text(intcomma(deliverycost));
+    $('#amountrur').text(intcomma(parseInt(deliverycost) + total));
+  }
+  $(document).ready(function(){
+    $('#changeOrder').click(function(){
+      document.location.href = '/bag/';
+    });
+    $('#changeAdds').click(function(){
+      document.location.href = '/accounts/profile/';
+    });
+    $(document).click(function(){
+      $('.title').hide();
+    });
+    $('.help').each(function(){
+      $(this).after('<div class="title">'+$(this).attr('title')+'</div>');
+      $(this).attr('title', '');
+      $(this).click(function(e){
+        $('.title').hide();
+        var offset = $(this).offset();
+        var position = $(this).position();
+        $(this).next().css('left', e.pageX-offset.left+position.left);
+        $(this).next().show('fast');
+        return false;
+      });
+    });
+    recost();
+    $('input[name="delivery"]').change(recost);
+
+    $('.confirmbutton').click(function(){
+      $('form').submit();
+    });
+    $('.returnbutton').click(function(){
+      document.location.href = '/shop/{{request.user.get_profile.gender}}/';
+    });
+    // -------------------
+    $('#id_phone').mask('+7 (999) 999-9999', {placeholder:'*'});
+    $('form').submit(function(){
+      if ($('input[name="paymethod"]:checked').attr('value') != '4' || $('input[name="phoneOK"]').attr('value') == 'ok') {
+        return true;
+      }
+      $('#changePhone').dialog({
+        width: 500,
+        buttons: {
+          'Подтвердить': function(){
+            $('input[name="phoneOK"]').attr('value', 'ok');
+            $('form').submit();
+            },
+          'Отмена': function(){$(this).dialog('close')}
+        }
+      });
+      return false;
+    });
+    $('#promo').click(function(){
+      $(this).replaceWith('<div id="promo"><input type="text" class="myform" id="promocode"/> <input id="ok" type="button" value="ok"></div>');
+      $('#promocode').focus();
+      $('#ok').click(function(){
+        var promocode = $('#promocode').val();
+        if (promocode.length == 10){
+          $.post('/order/promocode/', {'promocode': promocode}, function(data){
+            var discount = parseInt(data);
+            if (discount > 0){
+              $('#promo').replaceWith('<div id="promo">Ваш код принят</div>');
+              var cost = {{total}};
+              total = cost - (cost * parseInt(discount))/100;
+              $('table.total td:eq(1)').text('{0} р. (-{1}%)'.format(intcomma(total), discount));
+              recost();
+            } else {
+              $('#promo').replaceWith('<div id="promo">Неверный код или срок его действия завершён.</div>');
+            }
+          });
+        }
+      });
+    });
+  });
+</script>  
+{% endblock %}
+
+{% block title %} Подтверждение и оплата
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24 align_justify'>
+<div class='flatpage'>
+<form method='post' action='/order/pay/'>{% csrf_token %}
+<h4>ДЕТАЛИ ЗАКАЗА</h4>
+<hr/>
+<table class='checkout'>
+<tr>
+<th>
+Товар
+</th>
+<th>
+Цвет
+</th>
+<th>
+Размер
+</th>
+<th class='aright'>
+Кол-во
+</th>
+<th class='aright'>
+Сумма
+</th>
+</tr>
+{% for t in T %}
+<tr>
+<td>{{t.thing.model.name}}</td>
+<td>{{t.thing.color.name_ru}}</td>
+<td>{{t.size.size_ru}}</td>
+<td class='aright'>{{t.quantity}}</td>
+<td class='aright'>{{t.total|intcomma}} р.</td>
+</tr>
+{% endfor %}
+</table>
+<table class='total'>
+<tr class='aright'>
+  <td>Сумма:</td> 
+  <td>{{total|intcomma}} р.</td>
+</tr>
+<tr class='aright'>
+  <td>Доставка:</td> 
+  <td><span id='delrur'></span> р.</td>
+</tr>
+<tr class='aright fbold'>
+  <td>Итого:</td> 
+  <td><span id='amountrur'></span> р.</td>
+</tr>
+</table>
+<input id='changeOrder' type='button' value='Изменить'/>
+<br/>
+<div id='promo'>
+<a style='cursor:pointer'>Ввести код скидки</a>
+</div>
+<hr/>
+<h4>АДРЕС ДОСТАВКИ</h4>
+<hr/>
+<table class='checkout'>
+{% for a in address %}
+<tr>
+<td class='radio'>
+  <input name='address' value='{{a.id}}' type='radio' checked='checked'/>
+</td>
+<td>
+{% if a.zip %}{{a.zip}}, {% endif %}{{a}}
+</td>
+</tr>
+{% endfor %}
+</table>
+<input id='changeAdds' type='button' value='Изменить'/>
+<hr/>
+<h4>СПОСОБ ДОСТАВКИ</h4>
+<hr/>
+<table class='checkout'>
+{% for d in delivery %}
+<tr>
+<td class='radio'>
+  <input type='radio' name='delivery' id='dv_{{d.id}}' {% if forloop.first %}checked='checked'{% endif %} value='{{d.id}}'/>
+  <input type='hidden' name='deliverycost' id='dvc_{{d.id}}' value='{{d.cost}}'/>
+</td>
+<td>
+<label for='dv_{{d.id}}'>{{d}}</label> <sup title='{{d.description}}' class='help'>[?]</sup>
+</td>
+<td class='aright fbold'>
+{{d.cost|intcomma}} р.
+</td>
+</tr>
+{% endfor %}
+</table>
+<hr/>
+<h4>СПОСОБ ОПЛАТЫ</h4>
+<hr/>
+<table class='checkout'>
+
+{% for p in pays %}
+<tr>
+<td class='radio'>
+  <input id='pm_{{p.id}}' type='radio' name='paymethod' value='{{p.id}}' {% if forloop.first %}checked='checked'{% endif %}/>
+</td>
+<td>
+  <label for='pm_{{p.id}}'>{{p.method|safe}}</label> {% if p.description %}<sup class='help' title='{{p.description}}'>[?]</sup> {% endif %}
+</td>
+</tr>
+{% endfor %}
+
+</table>
+<hr/>
+<a class='returnbutton'></a>
+<a class='confirmbutton'></a>
+<br/>
+<br/>
+<input type='hidden' value='' name='phoneOK'/>
+<div id='changePhone'>
+  <p class='alert'>Проверьте правильность номера телефона<br/>
+     в случае ошибки оплата счёта будет невозможна.
+  </p>
+  <p><label for="id_phone">Номер телефона:</label> <input id="id_phone" type="text" name="phone" maxlength="30" value="{{profile.phone}}" /></p>
+</div>
+</form>
+</div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,43 @@
+﻿{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block js-css-add %}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+})
+
+</script>
+{% endblock %}
+
+
+{% block title %} Участник партнёрской программы {{profile.get_full_name}}
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24 flatpage'>
+<br/>
+<h3>
+Участник партнёрской программы<br/>{{profile.get_full_name}}
+</h3>
+<table>
+<tr>
+<td>Ваш UIN:</td><td><b>{{key}}</b></td>
+</tr>
+<tr>
+<td>Кол-во приглашённых:</td><td><b>{{pcount}}</b></td>
+</tr>
+<tr>
+<td>Совершено покупок:</td><td><b>{{partner.count}}</b></td>
+</tr>
+<tr>
+<td>Средств на счёте:</td><td><b>{{profile.deposit|intcomma}} р.</b></td>
+</tr>
+</table>                   
+</div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block js-css-add %}
+<script type='text/javascript'>
+  function showslide(hashtag) {
+    var tag = hashtag.replace('#', '');
+    $('div.slide').hide();
+    $('div.slide[name="{0}"]'.format(tag)).show('slide', 'slow');
+  }
+  $(function(){
+    $('div.slide').first().show();
+    if(location.hash) showslide(location.hash);
+    $('div.contents a').bind('click', function(){
+      var hashtag = $(this).attr('href');
+      showslide(hashtag);
+    });
+  });
+</script>
+{% endblock %}
+
+{% block title %} {{flatpage.title}}
+{% endblock %}
+
+{% load markup %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% endblock %}
+
+{% block content %}
+<div class='grid_24 align_justify'>
+<div class='flatpage'>
+{{flatpage.content|markdown:'tables'}}
+</div>
+</div>
+{% endblock %}
+
+

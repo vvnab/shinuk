@@ -1,0 +1,427 @@
+﻿{% extends 'base.html' %}
+{% block js-css-add %}
+<meta name='description' content='{{model.name}} {{model.description}}'>
+<meta name='keywords' content='{{model.brand.name}}, {{category.0.parent.name_ru}}{% for c in category %}, {{c.name_ru}}{% endfor %}'>
+<link rel='stylesheet' type='text/css' href='/media/css/cloud-zoom.css'/>
+<link rel='stylesheet' type='text/css' href='/media/css/tabs.css'/>
+<script type='text/javascript' src='/media/js/cloud-zoom.1.0.2.min.js'></script>
+<script type='text/javascript' src='/media/js/loader.js'></script>
+<script type='text/javascript' src='/media/js/tabs.js'></script>
+<script type='text/javascript' src='/media/js/getList2.js'></script>
+<script type='text/javascript' src='/media/js/jquery.swfobject.1-1-1.min.js'></script>
+
+{% load ssort %}
+
+<script type='text/javascript'>
+  
+  var things = new Array();
+  var thingsLen = 0;
+  var category = {{category.0.id}};
+  var sPage = {{sPage}};
+  var viewSWF = false;
+  var flashURL = '{{model.flashurl}}';
+
+  var Thing = {
+    'art'  : {{model.art}},
+    'img'  : '{{things.0.image_set.all.0.small}}',
+    'name' : '{{model.name}}',
+    'color': null,
+    'size' : null,
+    'color_ru': null,
+    'size_ru' : null,
+    'price': null
+  };
+  {% for t in things %}
+      thingsLen++;
+      things['{{t.color}}'] = {'img_lage': '{{t.image_set.all.0.lage}}', 'img_med': '{{t.image_set.all.0.medium}}', 'img_small': '{{t.image_set.all.0.small}}', 'price': '{{t.price_ru}}', 'oldprice': '{{t.old_price_ru}}', 'color_ru': '{{t.color.name_ru}}', 'rgb': '#{{t.color.rgb}}' , 'size': [{% for s in t.size.all|ssort %} {'ru': '{{s.size_ru}}', 'id': '{{s.size}}'}{% if not forloop.last %}, {% endif %}{% endfor %}]};
+  {% endfor %}
+
+  function setsizes(color){
+    Thing.color = color;
+    Thing.color_ru = things[color].color_ru;
+    Thing.price = things[color].price;
+    Thing.img = things[color].img_small;
+    $('#sizeid').removeAttr('disabled');
+    $('#sizeid').html('<option value="0">-- выберите размер --</option>');
+    for(var i in things[color].size){
+      $('#sizeid').append('<option value="{0}">{1}</option>'.format(things[color].size[i].id, things[color].size[i].ru));
+    }
+      if (things[color].size.length == 1){
+        $('#sizeid option[value="{0}"]'.format(things[color].size[0].id)).attr("selected", "selected");
+        Thing.size = things[color].size[0].id;
+        Thing.size_ru = things[color].size[0].ru;
+      };
+  }
+  function selectColor(color) {
+    if (!things[color]) return;
+    $('h4.price').text('{0} р.'.format(intcomma(things[color].price)));
+    if (parseInt(things[color].price) >= parseInt(things[color].oldprice)) {
+      $('h4.oldprice').text('');
+    } else {
+      $('h4.oldprice').text('{0} р.'.format(intcomma(things[color].oldprice)));
+    }
+    setsizes(color);
+    $('.coloroutline').removeClass('colorselected');
+    $('.coloroutline[id="{0}"]'.format(color)).addClass('colorselected');
+    $('#colorid').text(things[color].color_ru);
+    $('#zoom1').attr('href', things[color].img_lage);
+    $('#zoom1 img').attr('src', things[color].img_med);
+    $('#zoom2').attr('href', things[color].img_lage);
+    $('#zoom2').attr('rel', 'useZoom: "zoom1", smallImage: "{0}"'.format(things[color].img_med));
+    $('#zoom2 img').attr('src', things[color].img_small);
+    $('.cloud-zoom-gallery').show();
+    $('#zoom2').hide();
+    $('.cloud-zoom, .cloud-zoom-gallery').CloudZoom();
+  }
+  function setHash(name, color){
+    if ($.browser.msie) return;
+    var param = location.hash.replace('#', '').split('&');
+    var set = false;
+    for (var i in param) {
+      var part = param[i].split('=');
+      if (part[0] == name) {
+        set = true;
+        part[1] = color;
+        param[i] = part[0] + '=' + part[1];
+      }
+    }
+    if (!set) {
+      param.push('{0}={1}'.format(name, color));
+    }
+    var newhash = ''
+    for (var i in param) {
+      if (param[i] != '') {
+        newhash += param[i] + '&';
+      }
+    }
+    location.hash = newhash.substr(0, newhash.length-1);
+  }
+  $(document).ready(function(){
+    $('#sizeguidebutton').bind('click', function(){
+      $('#sizeguide').dialog({
+        height: 500,
+        width: 770,
+        modal: true,
+        buttons: {
+          'Закрыть': function() {
+            $( this ).dialog( "close" );
+          }
+        }
+      });
+    });
+    getList(sPage, category);
+    $('.cloud-zoom-gallery').bind('click', function(){
+      $('.cloud-zoom-gallery').show();
+      $(this).hide();
+    });
+    $('.coloroutline').bind('click', function(){
+      var color = $(this).attr('id');
+      setHash('color', color);
+      $('h4.price').text('{0} р.'.format(intcomma(things[color].price)));
+      if (parseInt(things[color].price) >= parseInt(things[color].oldprice)) {
+        $('h4.oldprice').text('');
+      } else {
+        $('h4.oldprice').text('{0} р.'.format(intcomma(things[color].oldprice)));
+      }
+      setsizes(color);
+      $('.coloroutline').removeClass('colorselected');
+      $(this).addClass('colorselected');
+      $('#colorid').text(things[color].color_ru);
+      $('#zoom1').attr('href', things[color].img_lage);
+      $('#zoom1 img').attr('src', things[color].img_med);
+      $('#zoom2').attr('href', things[color].img_lage);
+      $('#zoom2').attr('rel', 'useZoom: "zoom1", smallImage: "{0}"'.format(things[color].img_med));
+      $('#zoom2 img').attr('src', things[color].img_small);
+      $('.cloud-zoom-gallery').show();
+      $('#zoom2').hide();
+      $('.cloud-zoom, .cloud-zoom-gallery').CloudZoom();
+    });
+
+    if (thingsLen == 1) {
+      for (var color in things){
+        break;
+      };
+      $('#' + color).addClass('colorselected');
+      $('#colorid').text(things[color].color_ru);
+      setsizes(color);
+    }
+    $('.next').bind('click', function(){
+      if (getListLock) return;
+      if (sPageMax > sPage + 1){
+        sPage++;
+      } else {
+        sPage = 0;
+      }
+      getList(sPage, category);
+    });
+    $('.prev').bind('click', function(){
+      if (getListLock) return;
+      if (sPage > 0){
+        sPage--;
+      } else {
+        sPage = sPageMax - 1;
+      }
+      getList(sPage, category);
+    });
+    if (flashURL.indexOf('.swf') > -1) {
+      var swfText = 'ОБЗОР 360&deg;'
+      $('.swf').html(swfText);
+    } else {
+      var swfText = 'СМОТРЕТЬ ВИДЕО';
+      $('.swf').html(swfText);
+    }
+    $('.cloud-zoom-gallery').bind('click', function(){
+      if (viewSWF) {
+        viewSWF = !viewSWF;
+        $('#swf').hide();
+        $('#wrap').show();
+        $('.swf').html(swfText);
+      }    
+    });
+    $('.swf').bind('click', function(){
+      if (viewSWF) {
+        $('#swf').hide();
+        $('#wrap').show();
+        $('.swf').html(swfText);
+      } else {
+        if (flashURL.indexOf('.swf') > -1) {
+          $('#wrap').hide();
+          $('#swf').show();
+          $('#swf').flash({
+                          swf: flashURL,
+                          height: 370,
+                          width: 290
+                         });
+          $('.swf').html('ВЕРУТЬСЯ К ИЗОБРАЖЕНИЯМ');
+        } else {
+          $('#wrap').hide();
+          $('#swf').show();
+          $('#swf').flash({
+                          swf: 'http://assets.asosservices.com/web/uk/flash/AsosFlashPlayer.swf',
+                          flashvars: 'source={0}&playlist=http://images.asos.com/htmlpages/catWalkPlayer/playList.xml'.format(flashURL),
+                          height: 370,
+                          width: 290
+                         });
+          $('.swf').html('ВЕРУТЬСЯ К ИЗОБРАЖЕНИЯМ');
+        }
+      }
+      viewSWF = !viewSWF;
+    });
+
+    $('#sizeid').bind('change', function(){
+      if ($(this).attr('value') > 0) {
+        Thing.size = $(this).attr('value');
+        Thing.size_ru = $('#sizeid option:selected').text();
+        Thing.img = things[Thing.color].img_small;
+      };
+    });
+    
+    $('#wishList').bind('click', function(){
+      if (Thing.color) {
+        if (Thing.size) {
+          wishList.add(Thing);
+          alert('Товар добавлен в список \"Избранное\".');
+        } else {
+          alert('Выберите размер');
+        }
+      } else {
+        alert('Выберите цвет');
+      }
+    });
+
+    $('.bagbutton').bind('click', function(){
+      if (Thing.color) {
+        if (Thing.size) {
+          Bag.add(Thing);
+          $('div#bag').slideDown('slow');
+          Bag.show = true;
+          $('div#bag').oneTime(2000, function(){
+            $('div#bag').slideUp();
+            Bag.show = false;
+          });
+        } else {
+          alert('Выберите размер');
+        }
+      } else {
+        alert('Выберите цвет');
+      }
+    });
+
+    $(window).scroll(function(){
+      var top = $(document).scrollTop();
+      if (top < 100) {
+        top = 0;
+      } else {
+        top -= 80;
+      }
+      $('div#bag').css('marginTop', '{0}px'.format(top + 20));
+    });
+    selectColor(location.hash.replace('#color=', ''));
+  });
+</script>
+{% endblock %}
+
+{% block title %} {{model.name}}
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+{% load infoformat %}
+
+{% block content %}
+<div class='grid_24'>
+    <div class='nav'>
+    <a href='/'>Главная</a> &gt; <a href='/shop/{{category.0.group}}/'>{{category.0.group.name_ru}}</a> &gt; 
+    {% if category.0.parent %}
+    <a href='/shop/{{category.0.group}}/{{category.0.parent.name}}/'>{{category.0.parent.name_ru}}</a> &gt; <a href='/shop/{{category.0.group}}/{{category.0.parent.name}}/{{category.0.name}}/'>{{category.0.name_ru}}</a> &gt;
+    {% else %} 
+    <a href='/shop/{{category.0.group}}/{{category.0.name}}/'>{{category.0.name_ru}}</a> &gt;
+    {% endif %} 
+    {{model.name}}
+    </div>
+    <hr/>
+</div>
+<div class='grid_8 alpha'>
+<a id='zoom1' href='{{things.0.image_set.all.0.lage}}' class='cloud-zoom' rel='zoomWidth: 641, zoomHeight: 480, adjustX: 20, adjustY: -20, showTitle: false'>
+  <img src='{{things.0.image_set.all.0.medium}}' title='{{model.name}}'/>
+</a>
+{% if model.flashurl %}
+<div id='swf'>
+</div>
+<a class='swf'></a>
+{% endif %}
+<a id='zoom2' href='{{things.0.image_set.all.0.lage}}' class='cloud-zoom-gallery' rel='useZoom: "zoom1", smallImage: "{{things.0.image_set.all.0.medium}}"' style='display: none'>
+  <img src='{{things.0.image_set.all.0.small}}' alt = '' class='thumb'/>
+</a>
+{% for img in model.image_set.all.distinct.order_by %}
+<a href='{{img.lage}}' class='cloud-zoom-gallery' rel='useZoom: "zoom1", smallImage: "{{img.medium}}"'>
+  <img src='{{img.small}}' alt = '' class='thumb'/>
+</a>
+{% endfor %}
+<div class='morefrom'>
+<div class='h6'>В ДРУГИХ КАТЕГОРИЯХ &hellip;</div>
+<hr/>
+{% for cat in category %}
+<div>
+<a href='/shop/{{cat.group}}/'>{{cat.group.name_ru}}</a> &gt; 
+{% if cat.parent %}
+<a href='/shop/{{cat.group}}/{{cat.parent.name}}/'>{{cat.parent.name_ru}}</a> &gt; <a href='/shop/{{cat.group}}/{{cat.parent.name}}/{{cat.name}}/'>{{cat.name_ru}}</a>
+{% else %} 
+<a href='/shop/{{cat.group}}/{{cat.name}}/'>{{cat.name_ru}}</a>
+{% endif %} 
+</div>
+{% endfor%}
+<div>
+</div>
+<a href='/shop/{{category.0.group}}/'>{{category.0.group.name_ru}}</a> &gt;
+<a href='/shop/brand/{{category.0.group}}/'>бренды</a> &gt; 
+<a href='/shop/brand/{{model.brand.name}}/{{category.0.group}}/'>{{model.brand.title}}</a>
+</div>
+
+</div>
+<div class='grid_10'>
+
+<div class='description'>
+<h4 class='name'>{{model.name}}</h4>
+
+{% if not model_not_exist %}
+
+{% if things.0.oldprice %}
+<h4 class='oldprice'>{{things.0.old_price_ru|intcomma}} р.</h4>
+{% endif %}
+<h4 class='price'>{{things.0.price_ru|intcomma}} р.</h4>
+{{model.description|markdown}}
+<a class='brand' href='/shop/brand/{{model.brand.name}}/{{category.0.group}}/'>О производителе [ <b>{% if model.brand.title %} {{model.brand.title}} {% else %} {{model.brand.name}} {% endif %}</b> ]</a>
+<hr/>
+{% for thing in things %}
+<div id='{{thing.color.name}}' class='coloroutline'>
+<div class='colorblock' style='background:#{{thing.color.rgb}}' title='{{thing.color.name_ru}}'></div>
+</div>
+{% endfor %}
+<div id='colorid'>выберите цвет</div>
+
+<select id='sizeid' disabled='disabled'>
+  <option value="0">-- выберите размер --</option>
+</select>
+<input id='sizeguidebutton' type='button' value='Таблица размеров'/>
+
+{% if request.user.is_staff %}
+<div class='admin'>
+<a target='_blank' href='/admin/goods/model/{{model.id}}/'>редактировать</a><br/>
+<a target='_blank' href='/ladmin/goods_add/?art={{model.art}}'>перезагрузить</a><br/>
+<a target='_blank' href='{{model.url}}'>на сайте ASOS</a><br/>
+</div>
+{% endif %}
+
+
+<div class='bagbutton'></div>
+<input type='button' value='Сохранить в избранном' id='wishList'/>
+
+{% else %}
+
+<h4 class='oldprice' style='text-decoration: none'>Нет в наличии</h4>
+
+{{model.description|markdown}}
+<a class='brand' href='/shop/brand/{{model.brand.name}}/{{category.0.group}}/'>О производителе [ <b>{% if model.brand.title %} {{model.brand.title}} {% else %} {{model.brand.name}} {% endif %}</b> ]</a>
+
+{% if request.user.is_staff %}
+<div class='admin'>
+<a target='_blank' href='/admin/goods/model/{{model.id}}/'>редактировать</a><br/>
+<a target='_blank' href='/ladmin/goods_add/?art={{model.art}}'>перезагрузить</a><br/>
+<a target='_blank' href='{{model.url}}'>на сайте ASOS</a><br/>
+</div>
+<div class='clear'></div>
+{% endif %}
+
+{% endif %}
+
+<br/><br/>
+<div class='section'>
+  <ul class='tabs'>
+    <li class='current'>Общая информация</li>
+    <li>Доставка</li>
+  </ul>
+  <div class="box visible">
+    {{model.info|infoformat|safe}}
+  </div>
+  <div class="box">
+    <ul>
+    <li><b>Почта России</b><br/>
+    срок доставки ~ 20 дней, стоимость - 500 р. <br/>
+    при заказе на общую сумму от 5 000 р. - <b><i>бесплатно</i></b></li>
+    <li><b>Служба EMS</b><br/>
+    срок доставки ~ 10 дней, стоимость - 1500 р. <br/>
+    при заказе на общую сумму от 5 000 р. - <b><i>750 р.</i></b><br/>
+    при заказе на общую сумму от 10 000 р. - <b><i>бесплатно</i></b></li>
+    </ul>
+    <p>
+    Более подробную информацию о способах и сроках доставки товара, а так же о гарантиях и страховании почтовых отправлений смотрите в разделе <a href='/info/delivery/'>доставка</a>.
+    </p>
+  </div>
+</div>
+
+<script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+<div style='float: right' class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="link" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir"></div> 
+
+<script type="text/javascript" src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js"></script>
+<a class='skype' href="skype:shinukltd?call"><img src="/media/skype.png" style="border: none;" width="26" height="26" alt="Мой статус" /> : Звонок по Skype</a>
+
+</div> <!-- end of description -->
+
+</div>
+<div class='grid_6 omega'>
+<div style='text-align: right; margin-top: -10px;'>
+<div class='sInfo'></div>
+<div class='prev'></div><div class='next'></div>
+</div>
+<hr/>
+<div id='list2'></div>
+<hr/>
+<div style='text-align: right; margin-top: -10px;'>
+<div class='sInfo'></div>
+<div class='prev'></div><div class='next'></div>
+</div>
+</div>
+<div class='clear' style='height: 10px'></div>
+<div id='sizeguide' title='{{sizeguide.title}}'>{{sizeguide.content|safe|escape}}</div>
+{% endblock %}

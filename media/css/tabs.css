@@ -1,0 +1,51 @@
+.section {
+  margin: 0 0 20px;
+}
+
+ul.tabs {
+  height: 28px;
+  line-height: 25px;
+  list-style: none;
+  border-bottom: 1px solid #DDD;
+  margin: 0;
+  font-weight: bold;
+}
+.tabs li {
+  float: left;
+  display: inline;
+  margin: 0 1px -1px 0;
+  padding: 0 13px 1px;
+  color: #777;
+  cursor: pointer;
+  background: #F9F9F9;
+  background: #EFEFEF;
+  border: 1px solid #E4E4E4;
+  border-bottom: 1px solid #F9F9F9;
+  position: relative;
+}
+.tabs li:hover,
+.vertical .tabs li:hover {
+  color: #F70;
+  padding: 0 13px;
+  background: #FFFFDF;
+  border: 1px solid #FFCA95;
+}
+.tabs li.current {
+  color: #444;
+  background: white;
+  padding: 0 13px 2px;
+  border: 1px solid #D4D4D4;
+  border-bottom: 1px solid #EFEFEF;
+}
+
+.section .box {
+  display: none;
+  border: 1px solid #D4D4D4;
+  border-width: 0 1px 1px;
+  padding: 0 12px;
+  margin: 0;
+  padding-top: 10px;
+}
+.section .box.visible {
+  display: block;
+}

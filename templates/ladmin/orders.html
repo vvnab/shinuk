@@ -1,0 +1,36 @@
+﻿{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+<script type='text/javascript'>
+$(function(){
+  $('.order').click(function(){
+    var id = $(this).attr('id').replace('id_', '');
+    document.location.href = '/ladmin/order/{0}/'.format(id);
+  });
+});
+</script>
+{% endblock %}
+
+{% block title %} Заказы {% endblock %}
+
+{% load humanize %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% endblock %}
+
+{% block content %}
+<h2 class='fptitle'>Заказы</h2>
+<table>
+{% for o in orders %}
+<tr class='order {% if o.status.status.id = 6 %}returned{% endif %}{% if o.status.status.id = 4 %}posted{% endif %}{% if o.status.status.id = 7 %}reject{% endif %}{% if o.status.status.id = 1 %}new{% endif %}{% if o.status.status.id = 2 %}except{% endif %}{% if o.status.status.id = 3 %}send{% endif %}' id='id_{{o.id}}' data-id='{{o.status.status.id}}'>
+<td>{{o.id}}</td>
+<td>{{o.datetime|date:'Y.m.d H:i'}}</td>
+<td class='aleft'>{{o.user}}</td>
+<td class='aleft'>{{o.pay.method}}</td>
+<td class='aleft'>{{o.status.status}}</td>
+<td>{{o.totalcost|intcomma}} р.</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+

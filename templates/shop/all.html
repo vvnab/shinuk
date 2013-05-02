@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} Все модели
+{% endblock %}
+
+{% load markup %}
+
+{% block content %}
+<div class='grid_24'>
+  <br/>
+  <h1>Полный список моделей</h1>
+  <hr/>
+  <ol class='columns2'>
+  {% for m in models %}
+  <li><a href='/shop/model/{{m.art}}/'>{{m.art}} - {{m.name}}</a></li>
+  {% endfor %}
+  </ol>
+  <div class='clear'></div>
+</div>
+{% endblock %}

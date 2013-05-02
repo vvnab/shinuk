@@ -1,0 +1,99 @@
+{% extends 'lbase.html' %}
+{% block js-css-add %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.removeCookie('bag');
+    $('.confirmbutton').click(function(){
+      $('form').submit();
+    });
+    $('.returnbutton').click(function(){
+      document.location.href = '/shop/{{request.user.get_profile.gender}}/';
+    });
+  })
+</script>  
+{% endblock %}
+
+{% block title %} Спасибо, Ваш заказ принят.
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24 align_justify'>
+<div class='flatpage'>
+<h4>ЗАКАЗ <b>№ {{order.id}}</b> <br/> {{order.datetime}}</h4>
+<hr/>
+<div class='ordercard'>
+<table class='checkout'>
+  <tr>
+  <th>№</th>
+  <th>Артикул</th>
+  <th>Наименование</th>
+  <th>Цвет</th>
+  <th>Размер</th>
+  <th class='aright'>Кол-во</th>
+  <th class='aright'>Сумма</th>
+  </tr>
+  {% for item in order.orderitem_set.all %}
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{item.thing.model.art}}</td>
+    <td>{{item.thing.model.name}}</td>
+    <td>{{item.thing.color.name_ru}}</td>
+    <td>{{item.size.size_ru}}</td>
+    <td class='aright'>{{item.quantity}} шт.</td>
+    <td class='aright'>{{item.cost|intcomma}} р.</td>
+  </tr>
+  {% endfor %}
+</table><!-- end of table.checkout -->
+<table class='total'>
+  <tr class='aright'>
+  <td>Сумма:</td> 
+  <td>{{order.parcelcost|intcomma}} р.</td>
+  </tr>
+  <tr class='aright'>
+  <td>Доставка {{order.delivery}}:</td> 
+  <td><span id='delrur'>{{order.deliverycost|intcomma}}</span> р.</td>
+  </tr>
+  <tr class='aright fbold'>
+  <td>Итого:</td> 
+  <td><span id='amountrur'>{{order.totalcost|intcomma}}</span> р.</td>
+  </tr>
+</table><!-- end of table.total -->
+<h4>Адрес доставки</h4>
+<h6>
+<i>{{order.user.get_profile.get_full_name}}</i><br/>
+{{order.address.zip}} <i>{{order.address}}</i>
+</h6>
+</div> <!-- end of ordercard -->
+
+{% if order.pay.nick = 'check' %}
+<hr/>
+<p>
+В ближайшее время мы обработаем Ваш заказ и вышлем квитанцию на оплату <br/> 
+по адресу электронной почты который Вы указали при регистрации <i>({{order.user.email}})</i>.
+</p>
+{% endif %}
+
+{% if order.pay.nick = 'qiwi' %}
+<hr/>
+{% endif %}
+
+<p>
+В дальнейшем Вы можете отслеживать все свои заказы на странице <a href='/accounts/profile/'>личного кабинета</a>.
+</p>
+<p>
+<b>Спасибо за Ваш заказ.</b>
+</p>
+
+<hr/>
+<a class='returnbutton'></a>
+<div class='clear'></div>
+<br/>
+<hr/>
+</div>
+</div>
+{% endblock %}
+

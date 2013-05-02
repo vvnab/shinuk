@@ -1,0 +1,4 @@
+blue: 6d8fb3
+lightblue: dae2e8
+orange: d45500
+red: d40000

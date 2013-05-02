@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block js-css-add %}
+<script type="text/javascript">
+  function getRandomInt(min, max) {
+    var i = Math.floor(Math.random() * (max - min + 1)) + min;
+    var num = '{0}'.format(i);
+    if (i < 10) num = '0' + num;
+    return num;
+  }
+</script>
+{% endblock %}
+
+{% block title %} {{flatpage.title}}
+{% endblock %}
+
+{% load markup %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% endblock %}
+
+{% block content %}
+<div class='grid_12 alpha mainpage'>
+<a href='/shop/women/'>
+  <script type='text/javascript'>
+    document.open();
+    document.write("<img class='mimg' id='womenimg' src='/media/women_" + getRandomInt(1, 10) +".jpg' />");
+    document.close();
+  </script>
+  
+  <h1>ЖЕНЩИНЫ</h1>
+</a>
+</div>
+
+<div class='grid_12 omega mainpage'>
+<a href='/shop/men/'>
+  <script type='text/javascript'>
+    document.open();
+    document.write("<img class='mimg' id='menimg' src='/media/men_" + getRandomInt(1, 10) +".jpg' />");
+    document.close();
+  </script>
+  <h1>МУЖЧИНЫ</h1>
+</a>
+</div>
+
+<div class='grid_24 align_justify'>
+<!--{% if flatpage.content %}{{flatpage.content|markdown}}{% endif %}-->
+</div>
+{% endblock %}
+

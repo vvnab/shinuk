@@ -1,0 +1,151 @@
+﻿{% extends "base.html" %}
+
+{% block js-css-add %}
+<script type='text/javascript' src='/media/js/jquery.validate.min.js'></script>
+<script type='text/javascript' src='/media/js/localization/messages_ru.js'></script>
+<script type='text/javascript' src='/media/js/jquery.maskedinput-1.3.min.js'></script>
+<script type='text/javascript' src='/media/js/zip.js'></script>
+<script type="text/javascript">
+
+var gPlace;
+
+$(document).ready(function(){
+  $('form input, form select').focus(function(){
+    $(this).prev().css('fontWeight', 'bold');
+  });
+  $('form input, form select').blur(function(){
+    $(this).prev().css('fontWeight', 'normal');
+  });
+  $('#id_email').focus();
+  $('.register').validate({
+    rules : {
+      email: {
+        required: true,
+        email: true
+      },
+      first_name: {
+        required: true
+      },
+      last_name: {
+        required: true
+      },
+      city: {
+        required: true
+      },
+      street: {
+        required: true
+      },
+      house: {
+        required: true
+      }
+    }
+  });
+  $('#id_phone').mask('+7 (999) 999-9999', {placeholder:'*'});
+  $('#id_zip').mask('999999', {placeholder:'*'});
+  $('#id_zip').bind('keyup', function(){
+    var zip = parseInt($(this).attr('value'));
+    if (zip > 99999) {
+      $.ajax({
+        type: 'GET',
+        url: 'http://zip.wab-net.ru/zip/'+zip+'/',
+        dataType: 'jsonp',
+        jsonpCallback: 'successCallback',
+        success: function(data){
+          var subject = data.zip.subject;
+          for (var s in subject) {
+            $('#id_subject').attr('value', '{0} {1}'.format(subject[s].socr, subject[s].name));
+            var county = subject[s].county;
+            for (var c in county) {
+              if (c != 0) {
+                $('#id_county').attr('value', '{0} {1}'.format(county[c].socr, county[c].name)).attr('disabled', '').prev().css('color', 'black');
+              } else {
+                $('#id_county').attr('value', '').attr('disabled', 'yes').prev().css('color', '#999');
+              }
+              var city = county[c].city;
+              for (var ci in city) {
+                if (ci != 0) {
+                  $('#id_city').attr('value', '{0} {1}'.format(city[ci].socr, city[ci].name)).attr('disabled', '').prev().css('color', 'black');
+                } else {
+                  $('#id_city').attr('value', '').attr('disabled', 'yes').prev().css('color', '#999');
+                }
+                var place = city[ci].place; gPlace = place;
+                var countPlace = 0;
+                var places = new Array();
+                for (var p in place) {
+                  if(p > 0){
+                    countPlace += 1;
+                    places.push('{0} {1}'.format(place[p].socr, place[p].name));
+                  }
+                }
+                $('#id_place').autocomplete({source: places}).attr('disabled', '').prev().css('color', 'black');
+                if (countPlace == 0) {
+                  $('#id_place').attr('value', '').attr('disabled', 'yes').prev().css('color', '#999');
+                }
+                var street = place['0'].street;
+                var streets = new Array();
+                for (var st in street) {
+                  streets.push('{0} {1}'.format(street[st].socr, street[st].name));
+                }
+                $('#id_street').autocomplete({source: streets, minLength: 2});
+              }
+            }
+          }
+        }
+      });
+    } else {
+      $('form input').attr('disabled', '').prev().css('color', 'black');
+    }
+  });
+  $('#id_place').bind('change', function(){
+    var place = $('#id_place').attr('value');
+    if (place == '') {
+      var streets = new Array();
+      var street = gPlace['0'].street;
+      for(var s in street) {
+        streets.push('{0} {1}'.format(street[s].socr, street[s].name));
+      }
+      $('#id_street').autocomplete('destroy');
+      $('#id_street').autocomplete({source: streets, minLength: 2});
+      return true;
+    }
+    for (var p in gPlace) {
+      var teststr = '{0} {1}'.format(gPlace[p].socr, gPlace[p].name);
+      if (place == teststr) {
+        var streets = new Array();
+        var street = gPlace[p].street;
+        for(var s in street) {
+          streets.push('{0} {1}'.format(street[s].socr, street[s].name));
+        }
+        $('#id_street').autocomplete('destroy');
+        $('#id_street').autocomplete({source: streets, minLength: 2});
+        break;
+      } else {
+        $('#id_street').autocomplete('destroy');
+      }
+    }
+  });
+})
+</script>
+{% endblock %}
+
+
+{% block title %} Регистрация нового пользователя
+{% endblock %}
+
+{% block content %}
+<div class='grid_24'>
+<form class='register' method='post' action='.'>
+{% csrf_token %}
+<div class='grid_12 alpha'>
+{{userform.as_p}}
+{{profileform.as_p}}                   
+</div>
+<div class='grid_12 omega'>
+{{addressform.as_p}}
+</div>
+<div class='clear'></div>
+<input type='submit' value='Регистрация'/>
+</form>
+</div>
+
+{% endblock %}

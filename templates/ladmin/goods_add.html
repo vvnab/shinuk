@@ -1,0 +1,40 @@
+{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+<script type="text/javascript" src="/media/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script type='text/javascript' src='/media/js/loader.js'></script>
+<script type='text/javascript' src='/media/js/fetch.js'></script>
+<script type='text/javascript'>
+  var urlModel = '{{model.url}}';
+</script>
+{% endblock %}
+
+{% block title %} Добавление товара
+{% endblock %}
+
+{% load markup %}
+
+{% block content %}
+<h2 class='fptitle'>Добавление товара <small style='font-size: 12pt'>(добавлено сегодня - {{count}})</small></h2>
+{% if modelform.error %}
+<p class='error'>
+{{modelform.errors}}
+</p>
+{% endif %}
+<input name='href' type='text'/>
+<input id='fetch' type='button' value='fetch'/>
+<div class='baseInfo'>
+</div>
+<form id='fetchform' action='.' method='post'>
+  {% csrf_token %}
+  <div id='modelbox' class='box'>
+  {{ groupform.as_p }}
+  {{ modelform.as_p }}
+  <label>Фотографии:</label>
+  <span class='img_all'></span>
+  <div class='clear'></div>
+  </div>
+  <div class='response box'>
+  </div>
+</form>
+{% endblock %}

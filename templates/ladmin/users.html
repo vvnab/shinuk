@@ -1,0 +1,28 @@
+{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+{% endblock %}
+
+{% block title %} Покупатели {% endblock %}
+
+{% load humanize %}
+
+{% block search_panel %}
+    <h2 class='fptitle'> Покупатели </h2>
+{% endblock %}
+
+{% block content %}
+<h2 class='fptitle'>Покупатели - {{users.count}}</h2>
+
+<table>
+{% for i in users %}
+<tr>
+<td>{{i.user.first_name}}</td>
+<td>{{i.middlename}}</td>
+<td>{{i.user.last_name}}</td>
+<td>{{i.phone}}</td>
+<td>{{i.user.email}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+

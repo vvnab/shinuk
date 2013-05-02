@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+{% block js-css-add %}
+<style>
+.filter_bar {
+  display: none;
+}
+</style>
+
+<script type='text/javascript' src='/media/js/loader.js'></script>
+
+
+<script type='text/javascript'>
+  var Scroll = $.getCookie('Scroll');
+  var divs = {'catScroll': 'hidden', 'sizeScroll': 'hidden', 'brandScroll': 'hidden', 'colorScroll': 'hidden', 'priceScroll': ''};
+  if (!Scroll) {
+    var Scroll = divs;
+    $.setCookie('Scroll', Scroll);
+  }
+
+  var sData = {
+    'price_min': {{price_min.ru}},
+    'price_max': {{price_max.ru}},
+    'group': '{{group.name}}',
+    'category': '{{category.name}}',
+    'subcategory': '{{subcategory.name}}',
+    'fSort': 'new',
+    'fBrand': Array(),
+    'fSize': Array(),
+    'fColor': Array(),
+    'fSubcategory': Array(),
+    'fPrice': Array(),
+    'str': function() {
+             return 'fSort={0}&fBrand={1}&fSize={2}&fColor={3}&fSubcategory={4}&fPrice={5}'.format(this.fSort, this.fBrand, this.fSize, this.fColor, this.fSubcategory, this.fPrice);
+           }
+  };
+
+  Array.prototype.toggle = function (a) {
+    var contains = false;
+    var pos = 0;
+    for (var i in this) {
+      if (a == this[i]) {
+        contains = true;
+        pos = i;
+      }
+    }
+    if (contains) {
+      this.splice(pos, 1);
+    } else {
+      this.push(a);
+    }
+  }
+
+  var edit = {% if request.user.is_staff %}true{% else %}false{% endif %};
+  var filters = {};
+  $(document).ready(function(){
+    $('.filter_bar').show();
+    
+    $('.fSort [value="sort_{0}"]'.format(sData.fSort)).attr('selected', 'selected');
+
+    for (var i in sData.fSubcategory) $('a#cat_{0}'.format(sData.fSubcategory[i])).toggleClass('checked');
+    if (sData.fSubcategory.length > 0) $('a.fSubcategory').parents('ul').prev().children('a.fClear').show();
+
+    for (var i in sData.fBrand) $('a#brand_{0}'.format(sData.fBrand[i])).toggleClass('checked');
+    if (sData.fBrand.length > 0) $('a.fBrand').parents('ul').prev().children('a.fClear').show();
+
+    for (var i in sData.fColor) $('a#col_{0}'.format(sData.fColor[i])).toggleClass('checked');
+    if (sData.fColor.length > 0) $('a.fColor').parents('ul').prev().children('a.fClear').show();
+
+    for (var i in sData.fSize) {
+      $('a#size_{0}'.format(unescape(sData.fSize[i]))).toggleClass('checked');
+    }
+    if (sData.fSize.length > 0) $('a.fSize').parents('ul').prev().children('a.fClear').show();
+    
+
+    $('.filter_bar strong a.tg').bind('click', function(){
+      $(this).parent().toggleClass('hideChild');
+      $(this).parent().next().toggleClass('hidden');
+      if ($(this).parent().next().hasClass('hidden')){
+        Scroll[$(this).parent().next().attr('id')] = 'hidden';
+      } else {
+        Scroll[$(this).parent().next().attr('id')] = '';
+    }
+      $.setCookie('Scroll', Scroll);
+    });
+    $('.scroll').jScrollPane({contentWidth: 150});
+
+    $('#slider-range').slider({
+      'range': true,
+      'animate': true,
+      'min': sData.price_min,
+      'max': sData.price_max,
+      'values': [sData.price_min, sData.price_max],
+      'step': 100,
+      'slide': function (event, ui){
+        $( '#slider-value' ).text(intcomma(ui.values[0]) + ' - ' + intcomma(ui.values[1]));
+      },
+      'stop': function (event, ui){
+        if ((ru2en(ui.values[0]) > sData.price_min) || (ru2en(ui.values[1]) < sData.price_max)) {
+          sData.fPrice = [ru2en(ui.values[0]), ru2en(ui.values[1])];
+        } else {
+          sData.fPrice = Array();
+        }
+        position = 0;
+        listStop = Math.random();
+        getList(0, listStop);
+        document.location.hash = sData.str();
+        if (sData.fPrice.length > 0 ) {
+          $('#slider-range').parent().prev().children('a.fClear').show();
+        } else {
+          $('#slider-range').parent().prev().children('a.fClear').hide();
+        }
+      }
+    });
+
+    if (sData.fPrice.length > 0) {
+      $('#slider-range').slider('values', 0, en2ru(sData.fPrice[0]));
+      $('#slider-range').slider('values', 1, en2ru(sData.fPrice[1]));
+    }
+
+    $('#slider-value').text(intcomma($('#slider-range').slider('values', 0)) + ' - ' + intcomma($('#slider-range').slider('values', 1)));
+
+    
+    for (var i in divs) {
+      $('#'+i).addClass(Scroll[i]);
+      if(Scroll[i]) $('#'+i).prev().addClass('hideChild');
+    }
+
+    //фильтр по категории
+    $('.fSubcategory').bind('click', function(){
+      var id = $(this).attr('id').split('_')[1];
+      $(this).toggleClass('checked');
+      sData.fSubcategory.toggle(id);
+      if (sData.fSubcategory.length > 0 ) {
+        $(this).parents('ul').prev().children('a.fClear').show();
+      } else {
+        $(this).parents('ul').prev().children('a.fClear').hide();
+      }
+      position = 0;
+      listStop = Math.random();
+      getList(0, listStop);
+      document.location.hash = sData.str();
+    });
+
+    //фильтр по размерам
+    $('.fSize').bind('click', function(){
+      var name = $(this).attr('id').split('_')[1];
+      $(this).toggleClass('checked');
+      sData.fSize.toggle(unescape(name));
+      if (sData.fSize.length > 0 ) {
+        $(this).parents('ul').prev().children('a.fClear').show();
+      } else {
+        $(this).parents('ul').prev().children('a.fClear').hide();
+      }
+      position = 0;
+      listStop = Math.random();
+      getList(0, listStop);
+      document.location.hash = sData.str();
+    });
+
+    //фильтр по брендам
+    $('.fBrand').bind('click', function(){
+      var name = $(this).attr('id').split('_')[1];
+      $(this).toggleClass('checked');
+      sData.fBrand.toggle(name);
+      if (sData.fBrand.length > 0 ) {
+        $(this).parents('ul').prev().children('a.fClear').show();
+      } else {
+        $(this).parents('ul').prev().children('a.fClear').hide();
+      }
+      position = 0;
+      listStop = Math.random();
+      getList(0, listStop);
+      document.location.hash = sData.str();
+    });
+
+    //фильтр по цвету
+    $('.fColor').bind('click', function(){
+      var name = $(this).attr('id').split('_')[1];
+      $(this).toggleClass('checked');
+      sData.fColor.toggle(name);
+      if (sData.fColor.length > 0 ) {
+        $(this).parents('ul').prev().children('a.fClear').show();
+      } else {
+        $(this).parents('ul').prev().children('a.fClear').hide();
+      }
+      position = 0;
+      listStop = Math.random();
+      getList(0, listStop);
+      document.location.hash = sData.str();
+    });
+
+    //сортировка
+    $('.fSort').bind('change', function(){
+      var method = $(this).attr('value').split('_')[1];
+      sData.fSort = method;
+      position = 0;
+      listStop = Math.random();
+      getList(0, listStop);
+      document.location.hash = sData.str();
+    });
+
+    $('.fClear').bind('click', function(){
+      var f = $(this).parent().next().find('a').attr('class').split(' ')[0];
+      if (f == 'ui-slider-handle') {
+        f = 'fPrice';
+      }
+      sData[f] = new Array();
+      position = 0;
+      listStop = Math.random();
+      getList(0, listStop);
+      $(this).hide();
+      $(this).parent().next().find('a').each(function(){$(this).removeClass('checked')});
+      document.location.hash = sData.str();
+      if (f == 'fPrice') {
+        $('#slider-range').slider('values', 0, sData.price_min);
+        $('#slider-range').slider('values', 1, sData.price_max);
+        $('#slider-value').text(intcomma($('#slider-range').slider('values', 0)) + ' - ' + intcomma($('#slider-range').slider('values', 1)));
+      }
+    });
+  });
+</script>
+<script type='text/javascript' src='/media/js/getList.js'></script>
+{% endblock %}
+
+{% block title %} {{group.name_ru}} | {{category.name_ru}} {% if subcategory %} | {{subcategory.name_ru}}{% endif %}
+{% endblock %}
+
+{% load markup %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% endblock %}
+
+{% block content %}
+<div class='grid_24'>
+    <div class='nav'>
+    <a href='/'>Главная</a> &gt; <a href='/shop/{{group}}/'>{{group.name_ru}}</a> &gt; <a href='/shop/{{group}}/{{category.name}}/'>{{category.name_ru}}</a> {% if subcategory %}&gt; {{subcategory.name_ru}}{% endif %}
+    </div>
+    <hr/>
+</div>
+<div class='grid_4 alfa filter_bar'>
+    <h6>ПОДОБРАТЬ</h6>
+    <hr/>
+  {% if subcategorys.count > 0 %}
+    <strong>
+    <a class='tg'>КАТЕГОРИИ</a>
+    <a class='fClear'>Сброс</a>
+    </strong>
+    <ul id='catScroll' class='scroll'>
+    {% for s in subcategorys %}
+    <li><a class='fSubcategory' id='cat_{{s.id}}'>{{s.name_ru}}</a></li>
+    {% endfor %}
+    </ul>
+    <hr/>
+  {% endif %}
+  {% if sizes|length > 1 %}
+    <strong>
+    <a class='tg'>РАЗМЕРЫ</a>
+    <a class='fClear'>Сброс</a>
+    </strong>
+    <ul id='sizeScroll' class='scroll'>
+    {% for s in sizes %}
+    <li><a class='fSize' id='size_{{s.size}}'>{{s.size_ru}}</a></li>
+    {% endfor %}
+    </ul>
+    <hr/>
+  {% endif %}       
+  {% if brands.count > 1 %}
+    <strong>
+    <a class='tg'>БРЕНДЫ</a>
+    <a class='fClear'>Сброс</a>
+    </strong>
+    <ul id='brandScroll' class='scroll'>
+    {% for b in brands %}
+    <li><a class='fBrand' id='brand_{{b.id}}'>{{b.name}}</a></li>
+    {% endfor %}
+    </ul>
+    <hr/>
+  {% endif %}
+  {% if colors.count > 1 %}
+    <strong>
+    <a class='tg'>ЦВЕТА</a>
+    <a class='fClear'>Сброс</a>
+    </strong>
+    <ul id='colorScroll' class='scroll'>
+    {% for c in colors %}
+    <li><a class='fColor' id='col_{{c.base}}'>{{c.base}}</a></li>
+    {% endfor %}
+    </ul>
+    <hr/>
+  {% endif %}
+  {% if price_max != price_min %}
+    <strong>
+    <a class='tg'>ЦЕНЫ</a>
+    <a class='fClear'>Сброс</a>
+    </strong>
+    <div id='priceScroll'>
+    <div id='slider-range'></div>
+    <div id='slider-value'></div>
+    </div>
+    <hr/>
+  {% endif %}
+
+<script type="text/javascript" src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js"></script>
+<a class='skype' href="skype:shinukltd?call"><img src="/media/skype.png" style="border: none;" width="26" height="26" alt="Мой статус" /> : Звонок по Skype</a>
+
+</div> <!-- grid_4 -->
+
+<div class='grid_20 omega'>
+  {% if subcategory %}
+    <div class='partdesc'>
+    <div class='groupName'>{{group.name_ru}}</div>
+    <h2>
+    <span style='text-transform: uppercase'>{{subcategory.name_ru}}</span>
+    </h2>
+    {{subcategory.description|markdown}}
+    {% if request.user.is_staff %}
+      <a target='_blank' href='/admin/goods/category/{{subcategory.id}}/'>редактировать</a>
+    {% endif %}
+    {% if category.category_set.count %}
+    <hr/>
+    {% endif %}
+    <ul class='{% if category.category_set.count > 2 %}columns2{% endif %} nav'>
+    {% for c in category.category_set.all %}
+    <li><a href='/shop/{{group.name}}/{{category.name}}/{{c.name}}/'>{{c.name_ru}}</a></li>
+    {% endfor %}
+    <li><a href='/shop/{{group.name}}/{{category.name}}/'>&uarr; {{category.name_ru}}</a></li>
+    </ul>
+    </div> <!-- partdesc -->
+  {% else %}
+    <div class='partdesc'>
+    <div class='groupName'>{{group.name_ru}}</div>
+    <h2>
+    <span style='text-transform: uppercase'>{{category.name_ru}}</span>
+    </h2>
+    {{category.description|markdown}}
+    {% if request.user.is_staff %}
+      <a target='_blank' href='/admin/goods/category/{{category.id}}/'>редактировать</a>
+    {% endif %}
+    {% if category.category_set.count %}
+    <hr/>
+    {% endif %}
+    <ul class='{% if category.category_set.count > 3 %}columns2{% endif %} nav'>
+    {% for c in category.category_set.all %}
+    <li><a href='/shop/{{group.name}}/{{category.name}}/{{c.name}}/'>{{c.name_ru}}</a></li>
+    {% endfor %}
+    </ul>
+    </div> <!-- partdesc -->
+  {% endif %}
+    <div class='nav' style='margin: 15px 10px 25px;'>
+    <small></small>
+    <div style='float: right'>
+    <label for='sortby'>
+    СОРТИРОВКА:
+    </label>
+    <select class='fSort'>
+        <option value='sort_new'>Новинки</option>    
+        <option value='sort_down'>Цена &darr;</option>    
+        <option value='sort_up'>Цена &uarr;</option>    
+    </select>
+    </div>
+    </div>
+    <div class='clear'></div>
+    <div id='list'>
+    </div>
+    <div class='clear'></div>
+</div>
+
+<script type='text/javascript'>
+  function getHashParams() {
+    var hashParams = {};
+    var e,
+      a = /\+/g,  // Regex for replacing addition symbol with a space
+      r = /([^&;=]+)=?([^&;]*)/g,
+      d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+      q = window.location.hash.substring(1);
+
+    while (e = r.exec(q))
+     hashParams[d(e[1])] = d(e[2]);
+
+    return hashParams;
+  }
+
+  sData.hash = getHashParams();
+  sData.fSort = sData.hash.fSort ? sData.hash.fSort : sData.fSort;
+  sData.fBrand = sData.hash.fBrand ? sData.hash.fBrand.split(',') : Array();
+  sData.fSize = sData.hash.fSize ? sData.hash.fSize.split(',') : Array();
+  sData.fColor = sData.hash.fColor ? sData.hash.fColor.split(',') : Array();
+  sData.fSubcategory = sData.hash.fSubcategory ? sData.hash.fSubcategory.split(',') : Array();
+  sData.fPrice = sData.hash.fPrice ? sData.hash.fPrice.split(',') : Array();
+  
+</script>
+
+{% endblock %}

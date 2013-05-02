@@ -1,0 +1,41 @@
+{% block subject %} Весенние скидки в ShinUK! {% endblock %}
+
+{% block plain %}
+
+{% endblock %}
+
+{% block html %}
+<div style='margin: 10px auto; width: 960px'>
+    <a href='http://shinuk.ru'>
+        <img style='height:229px; width: 960px; border-bottom: 1px solid #eaceda' src='http://shinuk.ru/media/promo/10-03-2013-header.jpg'/>
+    </a>
+    <div style='padding: 0 40 0 80px; border-bottom: 1px solid #eaceda'>
+        <h2 style='font: italic 35pt Arial;'>
+            <a href='http://shinuk.ru' style='text-decoration: none; color: black'>
+           “На старт... внимание, шоппинг!”
+           </a>
+        </h2>
+        <a href='http://shinuk.ru'>
+            <img src='http://shinuk.ru/media/promo/10-03-2013-img_01.jpg' style='width: 411px; height: 411px; float: right; margin-left: 20px;'/>
+        </a>
+        <p style='font: normal 14pt Arial'>
+            <span style='text-transform: capitalize'>{{user.first_name}}{% if user.get_profile.middlename%} {{user.get_profile.middlename}}{% endif %}!</span><br/>
+            Воплотите все свои фантазии!</br>
+            Купите то, на что давно смотрели, но никак не могли собраться!
+        </p>
+        <p style='color: #e32179; font: bold 24pt Arial'>
+            - 10% на всё <br/>
+            + бесплатная доставка!
+        </p>
+        <p style='background: yellow; padding: 10px; font: bold 16pt Tahoma; display: inline-block'>
+            P1KJCUGQU8
+        </p>
+        <p style='font: normal 10pt Arial'>
+            Для того, чтобы получить скидку, воспользуйтесь промокодом, указанным в письме. При использовании скидки по промокоду также действуют скидки, существующие на сайте.
+            <br/>
+            Предложение действительно с 10.03.2013 по 25.03.2013
+            <br/><br/>
+            С уважением, команда ShinUK
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %} Ваша корзина и избранные модели
+{% endblock %}
+
+{% block js-css-add %}
+<script type='text/javascript' src='/media/js/jquery.maskedinput-1.3.min.js'></script>
+<script type='text/javascript' src='/media/js/bagedit.js'></script>
+<script type='text/javascript'>
+  $(document).ready(function(){
+    $('.removeWish').bind('click', function(){
+      var pk = $(this).attr('pk');
+      wishList.remove(pk);
+      document.location.href = '/bag/';
+    });
+    $('.removeBag').bind('click', function(){
+      var pk = $(this).attr('pk');
+      Bag.remove(pk);
+      document.location.href = '/bag/';
+    });
+  });
+</script>
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24'>
+  <br/>
+{% if not bag and not wishList %}
+  <h1>ВАША КОРЗИНА ЗАКАЗОВ ПУСТА</h1>
+{% endif %}
+
+{% if bag %}
+  <div class='buybutton'></div>
+  <h1>ВАША КОРЗИНА</h1>
+  <table class='bag'>
+  <tr>
+    <th colspan='2' >НАИМЕНОВАНИЕ</th>
+    <th colspan='2' >ПАРАМЕТРЫ</th>
+    <th>ЦЕНА</th>
+  </tr>
+  {% for k, t in bag.items %}
+  <tr>
+    <td class='rborder'>
+      <a href='/shop/model/{{t.art}}/'><img src='{{t.img}}' alt=''/></a>
+    </td>
+    <td class='rborder'>
+      <a class='tname' href='/shop/model/{{t.art}}/'>{{t.name}}</a>
+      <div class='buttons'>
+        <a class='removeBag' pk='{{k}}'><small>X</small> | <small>УДАЛИТЬ</small></a>
+      </div>
+    </td>
+    <td>
+      Цвет:<br/>
+      Размер:<br/>
+      Кол-во:
+    </td>
+    <td class='rborder'>
+      {{t.color_ru}}<br/>
+      {{t.size_ru}}<br/>
+      <input type='text' value='1' name='{{t.art}}'/>
+    </td>
+    <td>
+      <span title='{{t.price}}'>{{t.price|intcomma}} р.</span>
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+  <b id='amount'></b>
+  <div id='payments'></div>
+  <div class='buybutton'></div>
+  <div class='clear'></div>
+  <hr/>
+  <div class='grid_8 alpha'><div class='optbox'>
+    <div>ЗАЩИЩЁННЫЙ ПЛАТЁЖ</div>
+    <div>данные шифруются по протоколу <b>SSL v3.0</b></div>
+  </div></div>
+  <div class='grid_8'><div class='optbox'>
+    <div>БЕСПЛАТНАЯ ДОСТАВКА</div>
+    <div>при заказе на сумму от 5 000 рублей</div>
+  </div></div>
+  <div class='grid_8 omega'><div class='optbox'>
+    <div>СКИДКИ</div>
+    <div>при заказе на сумму более 10 000 рублей</div>
+  </div></div>
+  <div class='clear'></div>
+  <br/>
+  <hr/>
+{% endif %}    
+
+{% if wishList %}
+  <h4>ИЗБРАННОЕ</h4>
+  <table class='bag'>
+  <tr>
+    <th colspan='2' >НАИМЕНОВАНИЕ</th>
+    <th colspan='2' >ПАРАМЕТРЫ</th>
+    <th>ЦЕНА</th>
+  </tr>
+  {% for k, t in wishList.items %}
+  <tr>
+    <td class='rborder'>
+      <a href='/shop/model/{{t.art}}/'><img src='{{t.img}}' alt=''/></a>
+    </td>
+    <td class='rborder'>
+      <a class='tname' href='/shop/model/{{t.art}}/'>{{t.name}}</a>
+      <div class='buttons'>
+        <a class='removeWish' pk='{{k}}'><small>X</small> | <small>УДАЛИТЬ</small></a>
+      </div>
+    </td>
+    <td>
+      Цвет:<br/>
+      Размер:<br/>
+    </td>
+    <td class='rborder'>
+      {{t.color_ru}}<br/>
+      {{t.size_ru}}<br/>
+    </td>
+    <td>
+      {{t.price|intcomma}} р.
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+{% endif %}
+</div>
+{% endblock %}

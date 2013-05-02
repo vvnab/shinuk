@@ -1,0 +1,36 @@
+{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+{% endblock %}
+
+{% block title %} Письмо {% endblock %}
+
+{% load humanize %}
+
+{% block search_panel %}
+    <h2 class='fptitle'> Письмо </h2>
+{% endblock %}
+
+{% block content %}
+<h2 class='fptitle'>Письмо</h2>
+<form method='post' method='.'>
+    {% csrf_token %}
+    <label> <b>URL шаблона:</b></label><br/>
+    <input type='text' name='emailUrl' style='width: 600px' value='10-03-2013'/>
+    <br/><br/>
+    <label> <b>Получатели:</b></label><br/>
+    <select multiple class='email-widget' name='emailUsers'>
+        {% for i in users %}
+        <option value='{{i.id}}'>{{i.email}}</option>
+        {% endfor %}
+    </select>
+    <!--
+    <br/><br/>
+    <label> <b>Текст письма:</b></label><br/>
+    <textarea name='emailText' class='email-widget'>
+    </textarea>
+    -->
+    <br/><br/>
+    <input type='submit' value='Отправить' />
+</form>
+{% endblock %}
+

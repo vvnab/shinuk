@@ -1,0 +1,48 @@
+﻿{% extends 'lbase.html' %}
+{% block js-css-add %}
+<script type="text/javascript">
+</script>  
+{% endblock %}
+
+{% block title %} Транзакция завершена
+{% endblock %}
+
+{% load markup %}
+{% load humanize %}
+
+{% block content %}
+<div class='grid_24 align_justify'>
+<div class='flatpage'>
+<div class='grid_24'>
+<table>
+<tr>
+<td>счёт № </td><td>{{order.id}}</td> 
+</tr>
+<tr>
+<td>сумма</td><td>{{ order.totalcost }} р.</td>
+</tr>
+<tr>
+<td>время</td><td>{{ rr.datetime }}</td>
+</tr>
+<tr>
+<td>код ответа</td><td>{{ rr.rc }}</td>
+</tr>
+<tr>
+<td>код подтверждения</td><td>{{ rr.aproval }}</td>
+</tr>
+<tr>
+<td>RRN</td><td>{{ rr.rrn }}</td>
+</tr>
+<tr>
+<td>IRN</td><td>{{ rr.int_ref }}</td>
+</tr>
+</table>
+<hr/>
+<p>
+  <a href='/accounts/profile/'>Перейти в личный кабинет.</a>
+</p>
+</div>
+</div>
+</div>
+{% endblock %}
+

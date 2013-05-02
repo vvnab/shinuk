@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Все бренды
+{% endblock %}
+
+{% load markup %}
+
+{% block content %}
+<div class='grid_24'>
+  <br/>
+  <h1>Бренды :
+  {% for g in groups %}
+  {% if g = group %}
+    {{g.name_ru}} |
+  {% else %}
+    <a href='/shop/brand/{{g.name}}/'><small>{{g.name_ru}}</small></a> |
+  {% endif %}
+  {% endfor %}
+  {% if group = 'all' %}
+    все
+  {% else %}
+    <a href='/shop/brand/all/'><small>все</small></a> 
+  {% endif %}
+  </h1>
+  <hr/>
+  <ol class='columns3'>
+  {% for m in brands %}
+  <li class='brandName'><a href='/shop/brand/{{m.name}}/{{group.name|default:"women"}}/'>{% if m.title %}{{m.title}}{% else %}{{m.name}}{% endif %}</a> <small>[{{m.model_set.count}}]</small></li>
+  {% endfor %}
+  </ol>
+  <div class='clear'></div>
+</div>
+{% endblock %}

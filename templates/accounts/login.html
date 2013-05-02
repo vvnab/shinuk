@@ -1,0 +1,58 @@
+﻿{% extends "lbase.html" %}
+
+
+{% block title %} Требуется регистрация
+{% endblock %}
+
+{% block js-css-add %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#passwordRequest').click(function(){
+      var email = prompt('Введите адрес электронной почты указанной Вами при регистрации...', $('#id_username').val());
+      $.get('/accounts/send_password/', {email: email}, function(){
+        alert('Ваш новый пароль выслан на указанный адрес электронной почты.');
+        $('#id_password').val('');
+      });
+    });
+  });
+</script>
+{% endblock %}
+
+
+{% load markup %}
+
+
+{% block content %}
+<h2>ТРЕБУЕТСЯ РЕГИСТРАЦИЯ</h2>
+<hr/><br/>
+<div class='grid_5 alpha'>
+&nbsp;
+</div>
+<div class='grid_8'>
+<form class='clform logform' method="post" action="{% url django.contrib.auth.views.login %}">
+{% if form.errors %}
+<p class='error'>Неправильная пара логин-пароль! <br/>Попробуйте ещё раз.</p>
+{% endif %}
+{% csrf_token %}
+{{ form.username.label_tag }}<br/>
+{{ form.username }}
+<br/>
+{{ form.password.label_tag }}<br/>
+{{ form.password }}
+<br/>
+<input type="submit" value="вход" />
+<input type="hidden" name="next" value="{{ next }}" /> &nbsp;&nbsp;<a id='passwordRequest' href='javascript:void(0)'>забыли пароль?</a>
+</form>
+<br/>
+</div>
+<div class='grid_11 omega'>
+<h3>Впервые на ShinUK?</h3>
+<form method="get" action="/accounts/register/">
+<input type="submit" value="РЕГИСТРАЦИЯ" />
+<br/><br/>
+<p>
+Это не займёт много времени &hellip;
+</p>
+</form>
+</div>
+{% endblock %}

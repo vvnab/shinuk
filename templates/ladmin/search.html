@@ -1,0 +1,30 @@
+﻿{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+<script type='text/javascript'>
+  $(function(){
+  });
+</script>
+{% endblock %}
+
+{% block title %} Результат поиска {% endblock %}
+
+{% load humanize %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>Поиск товара</h2>
+{% endblock %}
+
+{% block content %}
+<h2 class='fptitle'>Поиск товара</h2>
+<form method='get' action='.'>
+  <input type='text' size='40' name='search' value='{{search}}'/>
+  <input type='submit' value='поиск'/>
+</form>
+<hr/>
+<ul>
+{% for i in items %}
+<li><a href='/shop/model/{{i.art}}/' target='__blank'>{{i}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
+

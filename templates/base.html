@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+  <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
+  <meta name='yandex-verification' content='50148cd447e9d77c' />
+  <meta name="google-site-verification" content="KO81FSPVvLvmj1knt6jLQiT-fOAqGjldFf2kDR8w6L4" />
+  <title>{% block title %}{% endblock %} | ShinUK</title>
+  <link rel='stylesheet' type='text/css' href='/media/css/reset.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/960_24_col.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/text.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/base.css'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/smoothness/jquery-ui.css'/>
+  <link rel='stylesheet/less' type='text/css' href='/media/css/text.less'/>
+  <link rel='stylesheet' type='text/css' href='/media/css/jquery.jscrollpane.css'/>
+  <link rel='shortcut icon' href='/media/favicon.ico' type='image/x-icon' />
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'></script>
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
+  <script type='text/javascript' src='/media/js/less-1.0.41.min.js'></script>
+  <script type='text/javascript' src="/media/js/jquery.timers.js"></script>
+  <script type='text/javascript' src='/media/js/string.format-1.0.packed.js'></script>
+  <script type='text/javascript' src='/media/js/json2.js'></script>
+  <script type='text/javascript' src='/media/js/jquery.ezCookie_0.8.0.js'></script>
+  <script type='text/javascript' src='/media/js/intcomma.js'></script>
+  <script type='text/javascript' src='/media/js/jquery.mousewheel.js'></script>
+  <script type='text/javascript' src='/media/js/mwheelIntent.js'></script>
+  <script type='text/javascript' src='/media/js/jquery.jscrollpane.min.js'></script>
+  <script type='text/javascript' src='/media/js/bag.js'></script>
+  <script type="text/javascript">
+    // new
+    var PROMO_EXPIRE = new Date(2012, 03, 12);
+    
+    function en2ru(en){
+      var ru = 0;
+      {% for i in PRICE_INTERVALS %}if (en > {{i.0}}) ru = en * {{i.1}};
+      {% endfor %}
+      return ru;
+    }
+    
+    function ru2en(ru){
+      var en = 0;
+      {% for i in PRICE_INTERVALS %}if (ru > ({{i.0}} * {{i.1}})) en = ru / {{i.1}};
+      {% endfor %}
+      return en;
+    }
+    
+    function getURLParameter(name) {
+        return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }
+
+    var actions = [
+        '<b>Бесплатная доставка товаров по России, Украине, Белорусии!', //<sup>*</sup></b><br/><small><sup>*</sup>при заказе на сумму от 5 000 р.</small>
+        '<b>Свыше 2 000 моделей одежды и аксессуаров.<br/>Более 200 ведущих мировых брендов...</b>'
+        ];
+
+    function show_moving_text(a, i, time){
+        var len = a.length;
+        $('.action').html(a[i++]);
+        setTimeout(function(){
+            if (i >= len) i = 0;
+            show_moving_text(a, i, time);
+        }, time);
+    }
+    
+    function show_timer(expire_date) {
+      var now = new Date();
+      var seconds = Math.floor((expire_date - now)/1000);
+      setInterval(function(){
+        seconds--;
+        var hours = Math.floor(seconds / 3600);
+        var minutes  = Math.floor((seconds - (hours * 3600)) / 60);
+        var sec = seconds - hours * 3600 - minutes * 60;
+        $('#time_expire').text('{0:n(2)}:{1:n(2)}:{2:n(2)}'.format(hours, minutes, sec));
+      }, 1000);
+    }
+
+    var tooltitconf = { position: "center right", offset: [0, 10], effect: "fade", opacity: 0.7 };
+
+    $(document).ready(function(){
+        if ( $.browser.msie ) {
+          if ( parseInt($.browser.version) < 8) {
+            $('body').hide();
+            alert( 'К сожалению Вы используете устаревшую версию браузера (MSIE ' + $.browser.version + ') не способную корректно отобразить данный сайт.\n\nМы настоятельно рекомендуем обновить Ваше программное обеспечение!' );
+            location.href='http://soft.yandex.ru/';
+          }
+        }
+        var UIN = getURLParameter('UIN');
+        if (UIN != 'null') {
+          $.setCookie('UIN', UIN);
+        };
+
+        show_moving_text(actions, 0, 10000);
+        //show_timer(PROMO_EXPIRE);
+
+        $('a').focus(function(){$(this).blur()});
+
+        $('.menu li').mouseenter(function(){
+            $(this).parent().find('.submenu').hide();
+            $(this).parent().find('a.atop').css({'color': 'black', 'backgroundColor':'transparent'})
+            $(this).find('.submenu').show();
+            $(this).find('a.atop').css({'color': 'white', 'backgroundColor':'black'})
+        }).mouseleave(function(){
+            $(this).parent().find('.submenu').hide();
+            $(this).parent().find('a.atop').css({'color': 'black', 'backgroundColor':'transparent'})
+        });
+        $('input[type="button"]').button();
+    })
+  </script>
+  {% block js-css-add %}
+  {% endblock %}
+</head>
+
+<body>
+<div class='top'>
+    <div class='container_24'>
+        <div class='grid_6 alpha'>
+            <a href='/' class='aimg' id='logo'></a>
+        </div>
+        <div class='grid_12'>
+            <input id='search' type='text' value='Поиск товара' />&nbsp;
+        </div>
+        <div class='grid_6 omega'>
+            <a class='bag' href='/accounts/profile/'>
+            <b><small>Личный Кабинет</small></b>
+            <br/>
+            {% if request.user.is_authenticated %} {{user.get_full_name}} {% else %} Вход / Регистрация {% endif %}
+            </a>
+        </div>
+    </div> <!-- end of container-->
+    <div class='clear'>
+    </div>
+</div> <!-- end of top -->
+
+
+<div class='header'>
+    <div class='container_24 clearfix'>
+    <div class='grid_18 alpha'>
+        <ul class='menu'>
+        <li> 
+        <a class='atop' style='border-color: white;' href='/shop/women/'><div>ДЛЯ ЖЕНЩИН</div></a>
+        <div class='submenu'>
+          <div class='menucol'>
+            <h6>ВИДЫ ОДЕЖДЫ</h6>
+            <ul>
+            {% for c in w_categorys %}
+            <li><a href='/shop/women/{{c.name}}/'>{{c.name_ru}}</a></li>
+            {% endfor %}
+            </ul>
+          </div>
+          <div class='menucol'>
+            <h6>БРЕНДЫ</h6>
+            <ul class='columns2'>
+            {% for b in w_brands|dictsort:'name' %}
+            <li><a href='/shop/brand/{{b}}/women/'>{{b.title|truncatewords:'2'}}</a></li>
+            {% endfor %}
+            <li><a href='/shop/brand/women/'><b>все бренды &rarr;</b></a></li>
+            </ul>
+          </div>
+        </div>
+        </li>
+
+        <li> 
+        <a class='atop' href='/shop/men/'><div>ДЛЯ МУЖЧИН</div></a>
+        <div class='submenu'>
+          <div class='menucol'>
+            <h6>ВИДЫ ОДЕЖДЫ</h6>
+            <ul>
+            {% for c in m_categorys %}
+            <li><a href='/shop/men/{{c.name}}/'>{{c.name_ru}}</a></li>
+            {% endfor %}
+            </ul>
+          </div>
+          <div class='menucol'>
+            <h6>БРЕНДЫ</h6>
+            <ul class='columns2'>
+            {% for b in m_brands|dictsort:'name' %}
+            <li><a href='/shop/brand/{{b}}/men/'>{{b.title|truncatewords:'2'}}</a></li>
+            {% endfor %}
+            <li><a href='/shop/brand/men/'><b>все бренды &rarr;</b></a></li>
+            </ul>
+          </div>
+        </div>
+        </li>
+        </ul>
+    </div> <!-- grid_18 -->
+    <div class='grid_6 omega'>
+
+    <a class='bag' id='abag' href='/bag/'>
+      Корзина / Избранное
+      <div>нет заказов</div>
+    </a>
+    </div>
+    <div id='bag'></div>
+
+    </div> <!-- end of container -->
+<div class='clear'></div>
+</div> <!-- end of header -->
+
+<div class='moving_text'>
+    <div class='container_24 clearfix'>
+    <div class='action'>
+    </div>
+    </div>
+</div> <!-- end of moving_text -->
+
+<!--
+<div class='promoaction'>
+    <div class='container_24 clearfix'>
+      <div class='grid_6 alpha'>&nbsp;</div>
+      <div class='grid_12' id='time_expire'>
+       &nbsp; 
+      </div>
+      <div class='grid_6 omega'>
+        <p>
+          Чтобы воспользоваться скидкой введите при оплате покупки код акции: P1KJCUGQU8
+        </p>
+      </div>
+    </div> 
+</div> <!-- end of promo_action -->
+
+<!--
+<div class='promoaction2'>
+    <div class='container_24 clearfix'>
+    <a href='https://w.qiwi.ru/mastercard.action' target='_blank'></a>
+    </div> 
+</div> <!-- end of promo_action -->
+
+<div class='main'>
+    <div class='container_24 clearfix'>
+        {% block content %}
+        {% endblock %}
+    </div> <!-- end of container -->
+</div> <!-- end of main -->
+
+<div class='footer'>
+  <div class='container_24'>
+    <div class='grid_4 alpha'>
+    <h6>Информация</h6>
+    <ul>
+      <li><a href='/info/about/'>о магазине</a></li>
+      <li><a href='/info/contacts/'>реквизиты & контакты</a></li>
+      <li><a href='/info/offer/'>правовая информация</a></li>
+      <li><a href='/info/parthnership/'>партнёрская программа</a></li>
+    </ul>
+    </div>
+    <div class='grid_4'>
+    <h6>Помощь</h6>
+    <ul>
+      <li><a href='/info/payment/'>оплата заказа</a></li>
+      <li><a href='/info/delivery/'>доставка & возврат</a></li>
+      <li><a href='/info/delivery/#warranty'>гарантии</a></li>
+      <li><a href='/info/feedback/'>отзывы</a></li>
+    </ul>
+    </div>
+    <div class='grid_4'>  
+    <h6>Магазин</h6>
+    <ul>
+      <li><a href='/shop/women/'>для женщин</a></li>
+      <li><a href='/shop/men/'>для мужчин</a></li>
+      <li><a href='/shop/brand/all/'>бренды</a></li>
+      <li><a href='/shop/'>все модели</a></li>
+    </ul>
+    </div>
+    <div class='grid_4'>  
+    <h6>Вопросы..?</h6>
+    <ul>
+      <li><a href='http://vkontakte.ru/shinuk' target='_blank'>Мы ВКонтакте</a></li>
+      <li><a href='javascript:void($zopim.livechat.window.show());'>Веб чат</a></li>
+      <li><a href='skype:shinukltd?call'>Звонок по Skype</a></li>
+      <li><a href='mailto:director@shinuk.ru?subject=Письмо директору'>Написать директору</a></li>
+    </ul>
+    </div>
+    <div class='omega'>  
+    <a class='paymethod' href='/info/payment/'>
+      <img alt='' src='/media/pay_method02.png'/>
+    </a>
+    <div class='creator'>
+        &copy; 2010 &ndash; {% now "Y" %} design by <a target="_blank" href="http://wab-net.ru"> wab-net.ru</a>
+        Powred by <a target="_blank" href="http://www.djangoproject.org">Django</a>&trade;
+    </div>
+    </div>
+    <div class='clear'></div>
+  </div> <!-- end of container_24 -->
+</div> <!-- end of footer -->
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+var yaParams = {/*Здесь параметры визита*/};
+</script>
+
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter7342108 = new Ya.Metrika({id:7342108,
+                    clickmap:true, webvisor:true,params:window.yaParams||{ }});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/7342108" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Start of Zopim Live Chat Script -->
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=
+z.s=d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o
+){z.set._.push(o)};$.setAttribute('charset','utf-8');$.async=!0;z.set.
+_=[];$.src=('https:'==d.location.protocol?'https://ssl':'http://cdn')+
+'.zopim.com/?bWY1FyHUhbkzgRCFBmfhPjuvnp44OI4r';$.type='text/java'+s;z.
+t=+new Date;z._=[];e.parentNode.insertBefore($,e)})(document,'script');
+$zopim(function(){
+  $zopim.livechat.setLanguage("ru");
+});
+</script>
+<!-- End of Zopim Live Chat Script -->
+
+</body>
+</html>

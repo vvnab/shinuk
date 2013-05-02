@@ -1,0 +1,22 @@
+﻿{% extends 'ladmin/base.html' %}
+{% block js-css-add %}
+{% endblock %}
+
+{% block title %} {{flatpage.title}}
+{% endblock %}
+
+{% load markup %}
+
+{% block search_panel %}
+    <h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% endblock %}
+
+{% block content %}
+<h2 class='fptitle'>{{ flatpage.title|capfirst }}</h2>
+{% if flatpage.content %}{{flatpage.content|markdown}}
+{% else%}
+{% load webdesign %}
+{% lorem 4 p random %}
+{% endif %}
+{% endblock %}
+

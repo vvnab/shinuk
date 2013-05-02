@@ -1,0 +1,136 @@
+input [type='button']{
+  padding: 3px 5px;
+  margin: 5px;
+}
+
+.box {
+  padding: 10px;
+  border: 1px solid #B3B3B3;
+}
+
+#fetchform {
+  margin-bottom: 20px;
+}
+
+input[name='href'] {
+  width: 700px;  
+}
+
+#fetchform img {
+  margin: 3px;
+}
+
+#fetchform label {
+  float: left;
+  width: 170px;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+input[type='text'], textarea, select {
+  border: 1px solid lightGrey;
+}
+
+#modelbox input[type='text'], #fetchform textarea {
+  width: 580px;  
+}
+
+.size {
+  padding: 5px;
+  margin-left: 120px;
+}
+
+sub {
+  vertical-align: bottom;
+  font-size: 80%;
+}
+
+.response input[type='text']{
+  margin: 0 5px 5px 5px;
+}
+
+hr.strong {
+  border-color: #B3B3B3;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 1px;
+  background: #999;
+  width: 100%;
+}
+
+table.total {
+  width: auto;
+  float: right;
+  margin-top: -21px;
+}
+
+tr {
+    background: white;
+}
+
+tr.order:hover {
+  background: blue;
+  color: white;
+  cursor: pointer;
+}
+
+td {
+  padding: 3px 7px;
+  text-align: right;
+}
+
+.aleft {
+  text-align: left;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+ul.menu {
+    line-height: 200%;
+}
+
+.endsale label {
+  width: 100px;
+  display: block;
+  float: left;
+}
+
+.endsale input[type='text'] {
+  display: block;
+  margin-bottom: 5px;
+  width: 300px;
+  padding: 3px;
+}
+
+.endsale#id1 {
+  float: left;
+}
+
+tr.new {
+  background: #ffffcc;
+}
+tr.except {
+  background: #ccffcc;
+}
+tr.send {
+  background: #ccffcc;
+}
+tr.reject {
+  background: #ffcccc;
+}
+tr.posted {
+  background: #ccccff;
+}
+tr.returned {
+  background: #ff5555;
+}
+
+.email-widget {
+    width: 600px;
+    height: 200px;
+}
